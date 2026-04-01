@@ -116,6 +116,12 @@ plot(nmm, type = "ranking")
 
 ![](reference/figures/README-nmm-1.png)
 
+``` r
+plot(nmm, type = "cumulative")
+```
+
+![](reference/figures/README-nmm-cumulative-1.png)
+
 ## Methods
 
 All methods are accessed through a single function:

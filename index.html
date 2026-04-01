@@ -155,6 +155,9 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"ranking"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-nmm-1.png" alt="" width="100%"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"cumulative"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-nmm-cumulative-1.png" alt="" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
@@ -212,7 +215,7 @@
 <h2 id="plot-customization">Plot Customization<a class="anchor" aria-label="anchor" href="#plot-customization"></a>
 </h2>
 <p>All plot methods return ggplot2 objects and accept customization parameters:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Colorblind-safe palette</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, palette <span class="op">=</span> <span class="st">"colorblind"</span><span class="op">)</span></span>
 <span></span>
@@ -248,23 +251,23 @@
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"cjdiag"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>To cite package <span class="st">'cjdiag'</span> <span class="cf">in</span> publications use<span class="sc">:</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  Karpa <span class="fu">D</span> (<span class="dv">2026</span>). _cjdiag<span class="sc">:</span> Diagnostic Tools <span class="cf">for</span> Conjoint Survey</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  Experiments_. R package version <span class="dv">0</span>.<span class="fl">2.0</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="sc">&lt;</span>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>dkarpa<span class="sc">/</span>cjdiag<span class="sc">&gt;</span>.</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  <span class="sc">@</span>Manual{,</span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    title <span class="ot">=</span> {cjdiag<span class="sc">:</span> Diagnostic Tools <span class="cf">for</span> Conjoint Survey Experiments},</span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    author <span class="ot">=</span> {David Karpa},</span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2026</span>},</span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>    note <span class="ot">=</span> {R package version <span class="dv">0</span>.<span class="fl">2.0</span>},</span>
-<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>dkarpa<span class="sc">/</span>cjdiag},</span>
-<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>To cite package <span class="st">'cjdiag'</span> <span class="cf">in</span> publications use<span class="sc">:</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  Karpa <span class="fu">D</span> (<span class="dv">2026</span>). _cjdiag<span class="sc">:</span> Diagnostic Tools <span class="cf">for</span> Conjoint Survey</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  Experiments_. R package version <span class="dv">0</span>.<span class="fl">2.0</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="sc">&lt;</span>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>dkarpa<span class="sc">/</span>cjdiag<span class="sc">&gt;</span>.</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="sc">@</span>Manual{,</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>    title <span class="ot">=</span> {cjdiag<span class="sc">:</span> Diagnostic Tools <span class="cf">for</span> Conjoint Survey Experiments},</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>    author <span class="ot">=</span> {David Karpa},</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2026</span>},</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>    note <span class="ot">=</span> {R package version <span class="dv">0</span>.<span class="fl">2.0</span>},</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>dkarpa<span class="sc">/</span>cjdiag},</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
