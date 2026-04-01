@@ -1,0 +1,200 @@
+# Fit Conjoint Diagnostic Model
+
+Fits a random forest or decision tree model to conjoint data. Use
+`resolution = "levels"` (default) for level-specific analysis where each
+attribute level becomes a separate binary predictor, or
+`resolution = "attributes"` for attribute-level analysis where original
+factor columns are passed directly to the model.
+
+## Usage
+
+``` r
+cj_fit(
+  formula,
+  data,
+  method = c("forest", "tree", "crt", "nmm", "marginal_r2"),
+  resolution = c("levels", "attributes"),
+  ntree = 500L,
+  cp = 0.005,
+  lambda_grid = c(1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300, 400,
+    500),
+  n_folds = 5L,
+  n_perm = 20L,
+  tol = 0.001,
+  resp_id = NULL,
+  n_boot = 0L,
+  seed = 42L,
+  ...
+)
+```
+
+## Arguments
+
+- formula:
+
+  A formula of the form `choice ~ attr1 + attr2 + ...` where the outcome
+  is binary (0/1 or a 2-level factor) and predictors are categorical
+  attributes (converted to factors internally).
+
+- data:
+
+  A data frame containing the conjoint data.
+
+- method:
+
+  Model type: `"forest"` (default), `"tree"`, `"crt"`, `"nmm"`, or
+  `"marginal_r2"`.
+
+- resolution:
+
+  Analysis resolution: `"levels"` (default) for level-specific
+  dummy-coded analysis, or `"attributes"` for attribute-level analysis
+  using original factors.
+
+- ntree:
+
+  Number of trees for random forest (default 500). Ignored when
+  `method = "tree"`.
+
+- cp:
+
+  Complexity parameter for decision tree (default 0.005). Ignored when
+  `method = "forest"`.
+
+- lambda_grid:
+
+  Numeric vector of lambda values for CRT regularization path (default
+  `c(1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200, 300, 400, 500)`).
+  Ignored when `method` is not `"crt"`.
+
+- n_folds:
+
+  Number of cross-validation folds for CRT (default 5). Ignored when
+  `method` is not `"crt"`.
+
+- n_perm:
+
+  Number of permutation rounds for CRT importance (default 20). Ignored
+  when `method` is not `"crt"`.
+
+- tol:
+
+  Convergence tolerance for HierNet (default 1e-3). Ignored when
+  `method` is not `"crt"`.
+
+- resp_id:
+
+  Character string naming the respondent ID column. Required when
+  `method = "nmm"` or `"marginal_r2"`. Ignored for other methods.
+
+- n_boot:
+
+  Number of bootstrap iterations for NMM confidence intervals (default 0
+  = no bootstrap). Ignored when `method` is not `"nmm"`.
+
+- seed:
+
+  Random seed for reproducibility (default 42).
+
+- ...:
+
+  Additional arguments passed to
+  [`randomForest::randomForest()`](https://rdrr.io/pkg/randomForest/man/randomForest.html)
+  or [`rpart::rpart()`](https://rdrr.io/pkg/rpart/man/rpart.html).
+
+## Value
+
+An S3 object inheriting from `cjdiag_fit`, with subclass depending on
+`method` (e.g., `cjdiag_forest`, `cjdiag_tree`, etc.). All objects
+support [`print()`](https://rdrr.io/r/base/print.html),
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html),
+[`summary()`](https://rdrr.io/r/base/summary.html), and
+[`importance()`](https://dkarpa.github.io/cjdiag/reference/importance.md).
+
+## Methods
+
+- `"forest"` (Random Forest):
+
+  Fits a random forest to dummy-coded attribute levels. Returns Mean
+  Decrease in Accuracy (MDA), Mean Decrease in Gini (MDG), and root node
+  appearance rates. MDA measures how much prediction accuracy drops when
+  a level is permuted — higher = more important. Supports both level and
+  attribute resolution.
+
+- `"tree"` (Decision Tree):
+
+  Fits an rpart classification tree. Reveals the hierarchical decision
+  structure: the root split is the most important attribute level,
+  deeper splits are conditional on earlier ones. Tree depth indicates
+  decision complexity. Supports both resolutions.
+
+- `"crt"` (CRT/HierNet):
+
+  L1-regularized logistic regression across a lambda grid (Ham, Imai &
+  Janson 2024). Levels that survive high regularization are robust
+  predictors; levels that drop out early are weak. Reports max lambda
+  survived and permutation MDA. Levels only.
+
+- `"nmm"` (Nested Marginal Means):
+
+  Sequential elimination procedure (Dill, Howlett & Mueller-Crepon
+  2024). At each step, the most decisive attribute level is identified
+  and ambiguous pairs are removed. Decisiveness = \|MM - 0.5\| \* 2.
+  Reveals the sequential decision order. Requires `resp_id`. Levels
+  only.
+
+- `"marginal_r2"` (Marginal R-squared):
+
+  Per-respondent importance metric (Jenke et al. 2021). For each
+  respondent, regresses choices on each attribute separately and
+  computes adjusted R-squared. Respondents with R-squared = 0 for an
+  attribute likely ignored it. Requires `resp_id`.
+
+## Examples
+
+``` r
+# \donttest{
+data(immig)
+rf <- cj_fit(Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+             Job + JobPlans, data = immig, method = "forest")
+print(rf)
+#> Conjoint Random Forest 
+#> ====================== 
+#> 
+#> Resolution: levels
+#> Trees: 500
+#> OOB Error: 42.2%
+#> Observations: 2,000
+#> Attributes: 5
+#> Levels: 28
+#> 
+#> Top 10 levels by MDA:
+#> 
+#> # A tibble: 10 × 5
+#>     rank attribute      level                       mda root_pct
+#>    <int> <chr>          <chr>                     <dbl>    <dbl>
+#>  1     1 JobPlans       no plans to look for work 16.7      17.4
+#>  2     2 LanguageSkills fluent English            12.3      11.2
+#>  3     3 Education      no formal                 12.0       8.8
+#>  4     4 LanguageSkills used interpreter          11.5       8.4
+#>  5     5 JobPlans       contract with employer    10.3      13.2
+#>  6     6 Education      college degree             7.84      9  
+#>  7     7 Job            janitor                    5.55      6.8
+#>  8     8 Job            doctor                     4.50      3.6
+#>  9     9 Education      graduate degree            3.27      2  
+#> 10    10 Job            gardener                   2.74      0.6
+plot(rf)
+
+summary(rf)
+#> Conjoint Random Forest Summary
+#>   500 trees, OOB error 42.2%, 2,000 obs, 28 levels
+#>   Top-1 MDA: 16.7 (30% of total)
+#>   Top-3 MDA: 41.0 (74% of total)
+#>   Root split: no plans to look for work (17.4%)
+
+tr <- cj_fit(Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+             Job + JobPlans, data = immig, method = "tree")
+plot(tr, type = "importance")
+
+# }
+```

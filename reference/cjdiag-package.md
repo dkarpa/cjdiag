@@ -1,0 +1,38 @@
+# cjdiag: Diagnostic Tools for Conjoint Experiments
+
+A unified toolkit for diagnosing conjoint survey experiments using
+machine learning (random forests, decision trees, L1-regularized
+logistic regression), non-compensatory decision models (nested marginal
+means), and per-respondent importance diagnostics (marginal R-squared).
+
+## Entry Points
+
+- [`cj_fit()`](https://dkarpa.github.io/cjdiag/reference/cj_fit.md) —
+  Fits one of 5 methods: `"forest"`, `"tree"`, `"crt"`, `"nmm"`,
+  `"marginal_r2"`
+
+## Common Workflow
+
+    # 1. Fit a model
+    rf <- cj_fit(outcome ~ attr1 + attr2, data = df, method = "forest")
+
+    # 2. View results
+    print(rf)
+    importance(rf)
+
+    # 3. Visualize
+    plot(rf)
+    plot(rf, palette = "colorblind", group_by_attribute = TRUE)
+
+## Customization
+
+All plot methods support `base_size`, `colors`, `palette`, `theme`,
+`label_wrap`, `attribute.names`, and `level.names` parameters. Use
+[`set_cjdiag_theme()`](https://dkarpa.github.io/cjdiag/reference/set_cjdiag_theme.md)
+and
+[`set_cjdiag_labels()`](https://dkarpa.github.io/cjdiag/reference/set_cjdiag_labels.md)
+to set global defaults.
+
+## Author
+
+**Maintainer**: David <david@example.com>
