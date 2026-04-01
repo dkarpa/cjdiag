@@ -2,5 +2,5 @@
 
 ### Getting Started
 
-- [Introduction to
+- [Getting Started with
   cjdiag](https://dkarpa.github.io/cjdiag/articles/introduction.md):
