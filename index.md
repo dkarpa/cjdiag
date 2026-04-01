@@ -108,19 +108,14 @@ nmm <- cj_fit(
     ReasonforApplication + PriorEntry,
   data = immig,
   method = "nmm",
-  resp_id = "CaseID"
+  resp_id = "CaseID",
+  n_boot = 0
 )
 
-plot(nmm, type = "ranking")
-```
-
-![](reference/figures/README-nmm-1.png)
-
-``` r
 plot(nmm, type = "cumulative")
 ```
 
-![](reference/figures/README-nmm-cumulative-1.png)
+![](reference/figures/README-nmm-1.png)
 
 ## Methods
 

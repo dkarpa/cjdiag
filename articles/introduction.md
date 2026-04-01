@@ -193,7 +193,7 @@ discriminate (because both profiles share it), and repeats. The result
 is a sequential ranking of which attribute levels settle choices first.
 
 ``` r
-nmm <- cj_fit(f, data = immig, method = "nmm", resp_id = "CaseID")
+nmm <- cj_fit(f, data = immig, method = "nmm", resp_id = "CaseID", n_boot = 0)
 nmm
 #> Conjoint Nested Marginal Means 
 #> ============================== 
@@ -201,40 +201,31 @@ nmm
 #> Observations: 2,000
 #> Attributes: 9
 #> Levels: 50
-#> Bootstrap iterations: 200
 #> 
 #> Total pairs: 1,000
 #> After top 5: 205 (20.5% remaining)
 #> 
 #> Top 10 levels by decisiveness:
 #> 
-#> # A tibble: 10 × 8
-#>     rank attribute       level          mm decisiveness pct_of_total  q025  q975
-#>    <int> <chr>           <chr>       <dbl>        <dbl>        <dbl> <dbl> <dbl>
-#>  1     1 JobPlans        no plans t… 0.305        0.389         38    1     44  
-#>  2     2 Education       college de… 0.687        0.375         16    1     27.0
-#>  3     3 Education       no formal   0.331        0.339         12.1  1     30  
-#>  4     4 PriorEntry      once w/o a… 0.303        0.395         11.9  1     50  
-#>  5     5 Job             computer p… 0.733        0.467          1.5  2     37  
-#>  6     6 Job             doctor      0.688        0.375          1.6  1     38  
-#>  7     7 CountryofOrigin Somalia     0.714        0.429          2.1  4     36.0
-#>  8     8 Education       graduate d… 0.712        0.423          5.2  4     29  
-#>  9     9 CountryofOrigin China       0.762        0.524          2.1  5     32  
-#> 10    10 Job             nurse       0.667        0.333          2.4  4.98  40
+#> # A tibble: 10 × 6
+#>     rank attribute       level                      mm decisiveness pct_of_total
+#>    <int> <chr>           <chr>                   <dbl>        <dbl>        <dbl>
+#>  1     1 JobPlans        no plans to look for w… 0.305        0.389         38  
+#>  2     2 Education       college degree          0.687        0.375         16  
+#>  3     3 Education       no formal               0.331        0.339         12.1
+#>  4     4 PriorEntry      once w/o authorization  0.303        0.395         11.9
+#>  5     5 Job             computer programmer     0.733        0.467          1.5
+#>  6     6 Job             doctor                  0.688        0.375          1.6
+#>  7     7 CountryofOrigin Somalia                 0.714        0.429          2.1
+#>  8     8 Education       graduate degree         0.712        0.423          5.2
+#>  9     9 CountryofOrigin China                   0.762        0.524          2.1
+#> 10    10 Job             nurse                   0.667        0.333          2.4
 ```
-
-### Decisiveness ranking
-
-``` r
-plot(nmm, type = "ranking")
-```
-
-![](introduction_files/figure-html/nmm-ranking-1.png)
 
 ### Cumulative explanatory power
 
 ``` r
-plot(nmm, type = "cumulative")
+plot(nmm)
 ```
 
 ![](introduction_files/figure-html/nmm-cumulative-1.png)
