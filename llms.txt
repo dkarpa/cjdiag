@@ -7,9 +7,6 @@ which ones respondents ignore.
 ## Installation
 
 ``` r
-# From CRAN
-install.packages("cjdiag")
-
 # Development version from GitHub
 # install.packages("pak")
 pak::pak("dkarpa/cjdiag")
