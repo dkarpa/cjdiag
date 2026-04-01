@@ -75,14 +75,6 @@ plot(rf, top_n = 20)
 
 ![](reference/figures/README-rf-importance-1.png)
 
-### Grouped by Attribute
-
-``` r
-plot(rf, group_by_attribute = TRUE, palette = "colorblind", top_n = 20)
-```
-
-![](reference/figures/README-rf-grouped-1.png)
-
 ### Decision Tree
 
 ``` r
@@ -94,7 +86,7 @@ tr <- cj_fit(
   method = "tree"
 )
 
-plot(tr, type = "importance", top_n = 15)
+plot(tr)
 ```
 
 ![](reference/figures/README-tree-1.png)
