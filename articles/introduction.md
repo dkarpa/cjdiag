@@ -79,6 +79,14 @@ plot(rf, top_n = 20)
 
 ![](introduction_files/figure-html/forest-plot-1.png)
 
+### Attribute ranking
+
+``` r
+plot(rf, type = "rank")
+```
+
+![](introduction_files/figure-html/forest-rank-1.png)
+
 ### Combined MDA + root node rate
 
 ``` r

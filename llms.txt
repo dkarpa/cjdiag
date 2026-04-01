@@ -75,6 +75,14 @@ plot(rf, top_n = 20)
 
 ![](reference/figures/README-rf-importance-1.png)
 
+### Attribute Ranking
+
+``` r
+plot(rf, type = "rank")
+```
+
+![](reference/figures/README-rf-rank-1.png)
+
 ### Decision Tree
 
 ``` r

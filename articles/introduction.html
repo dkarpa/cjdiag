@@ -130,9 +130,16 @@ hundreds of trees — a proxy for which cue respondents check first.</p>
 <p><img src="introduction_files/figure-html/forest-plot-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
-<h3 id="combined-mda-root-node-rate">Combined MDA + root node rate<a class="anchor" aria-label="anchor" href="#combined-mda-root-node-rate"></a>
+<h3 id="attribute-ranking">Attribute ranking<a class="anchor" aria-label="anchor" href="#attribute-ranking"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/forest-rank-1.png" class="r-plt" alt="" width="672"></p>
+</div>
+<div class="section level3">
+<h3 id="combined-mda-root-node-rate">Combined MDA + root node rate<a class="anchor" aria-label="anchor" href="#combined-mda-root-node-rate"></a>
+</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"combined"</span>, top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/forest-combined-1.png" class="r-plt" alt="" width="672"></p>
 </div>
@@ -141,7 +148,7 @@ hundreds of trees — a proxy for which cue respondents check first.</p>
 </h3>
 <p>How many levels does it take to account for most of the total
 importance?</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"cumulative_pct"</span>, top_n <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/forest-cumulative-1.png" class="r-plt" alt="" width="672"></p>
 </div>
@@ -150,7 +157,7 @@ importance?</p>
 </h3>
 <p>Instead of individual levels, you can also measure importance at the
 attribute level:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_attr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"forest"</span>, resolution <span class="op">=</span> <span class="st">"attributes"</span><span class="op">)</span></span>
 <span><span class="va">rf_attr</span></span>
 <span><span class="co">#&gt; Conjoint Random Forest </span></span>
@@ -186,7 +193,7 @@ choices. The root split identifies the <em>gatekeeper</em> attribute —
 the one that matters most. Deeper splits are conditional on earlier
 ones. Tree depth indicates how many attributes are needed to explain
 most choices.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"tree"</span><span class="op">)</span></span>
 <span><span class="va">tr</span></span>
 <span><span class="co">#&gt; Conjoint Decision Tree </span></span>
@@ -215,7 +222,7 @@ most choices.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education      4th grade                       0   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 Education      8th grade                       0   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Education      graduate degree                 0</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/tree-plot-1.png" class="r-plt" alt="" width="768"></p>
 </div>
@@ -230,7 +237,7 @@ most <em>decisive</em> level), then removes tasks where that level
 cannot discriminate (because both profiles share it), and repeats. The
 result is a sequential ranking of which attribute levels settle choices
 first.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"nmm"</span>, resp_id <span class="op">=</span> <span class="st">"CaseID"</span><span class="op">)</span></span>
 <span><span class="va">nmm</span></span>
 <span><span class="co">#&gt; Conjoint Nested Marginal Means </span></span>
@@ -261,14 +268,14 @@ first.</p>
 <div class="section level3">
 <h3 id="decisiveness-ranking">Decisiveness ranking<a class="anchor" aria-label="anchor" href="#decisiveness-ranking"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"ranking"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/nmm-ranking-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="cumulative-explanatory-power">Cumulative explanatory power<a class="anchor" aria-label="anchor" href="#cumulative-explanatory-power"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"cumulative"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/nmm-cumulative-1.png" class="r-plt" alt="" width="672"></p>
 </div>
@@ -280,7 +287,7 @@ use?<a class="anchor" aria-label="anchor" href="#marginal-r-squared-which-attrib
 <p>For each individual respondent, marginal R-squared (Jenke et
 al. 2021) measures how well each attribute alone explains their choices.
 Respondents with R² = 0 for an attribute likely ignored it entirely.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"marginal_r2"</span>, resp_id <span class="op">=</span> <span class="st">"CaseID"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
 <span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
@@ -359,7 +366,7 @@ hierNet) to strip away weak signals. Levels that keep their effect even
 under heavy penalization genuinely drive choices; levels that vanish
 quickly are noise or redundant. Requires the <a href="https://cran.r-project.org/package=hierNet" class="external-link">hierNet</a>
 package.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">crt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"crt"</span>,</span>
 <span>              lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>, n_folds <span class="op">=</span> <span class="fl">3</span>, n_perm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">crt</span></span>
@@ -395,7 +402,7 @@ package.</p>
 </h2>
 <p>The <code><a href="../reference/importance.html">importance()</a></code> function returns a standardized tibble
 from any model, making it easy to compare across methods:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/importance.html">importance</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span></span>
 <span><span class="va">imp</span></span>
 <span><span class="co">#&gt; Conjoint Importance Metrics </span></span>
@@ -420,12 +427,12 @@ from any model, making it easy to compare across methods:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used int…  4.66  20.2      5.6   4.91     1.37 Languag…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq       4.15  17.1      4.6   3.53     2.15 Country…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor    3.87  18.0      3     2.09     3.36 Jobjani…</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/importance-plot-1.png" class="r-plt" alt="" width="672"></p>
 <p>Results can also be converted to a data frame for further
 analysis:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   rank      attribute                     level       mda      mdg root_pct</span></span>
 <span><span class="co">#&gt; 1    1       JobPlans no plans to look for work 13.478845 28.16033     15.4</span></span>
@@ -443,7 +450,7 @@ analysis:</p>
 <span><span class="co">#&gt; 6  1.607777 5.250203         PriorEntryonce.as.tourist</span></span></code></pre></div>
 <p>If <a href="https://cran.r-project.org/package=broom" class="external-link">broom</a> is
 installed, <code>tidy()</code> and <code>glance()</code> also work:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">generics</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 50 × 9</span></span></span>
 <span><span class="co">#&gt;     rank attribute       level       mda   mdg root_pct class_0 class_1 var_name</span></span>
@@ -487,7 +494,7 @@ display</li>
 <li>
 <code>theme</code>: A full ggplot2 theme object</li>
 </ul>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>,</span>
 <span>     palette <span class="op">=</span> <span class="st">"colorblind"</span>,</span>
 <span>     base_size <span class="op">=</span> <span class="fl">14</span>,</span>
@@ -499,7 +506,7 @@ display</li>
 <h3 id="global-defaults">Global defaults<a class="anchor" aria-label="anchor" href="#global-defaults"></a>
 </h3>
 <p>Set defaults once and apply everywhere:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"colorblind"</span>, base_size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/set_cjdiag_labels.html">set_cjdiag_labels</a></span><span class="op">(</span></span>
 <span>  attribute.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
