@@ -75,14 +75,6 @@ plot(rf, top_n = 20)
 
 ![](reference/figures/README-rf-importance-1.png)
 
-### Attribute Ranking
-
-``` r
-plot(rf, type = "rank")
-```
-
-![](reference/figures/README-rf-rank-1.png)
-
 ### Decision Tree
 
 ``` r
@@ -122,13 +114,13 @@ plot(nmm, type = "cumulative")
 All methods are accessed through a single function:
 `cj_fit(formula, data, method)`.
 
-| Method        | `method =`      | Question                                    | Key output                       |
-|---------------|-----------------|---------------------------------------------|----------------------------------|
-| Random Forest | `"forest"`      | Which attributes matter most?               | MDA ranking, root node rates     |
-| Decision Tree | `"tree"`        | How are decisions structured?               | Tree splits, variable importance |
-| CRT/HierNet   | `"crt"`         | Which levels genuinely drive choices?       | Lambda survival path             |
-| Nested MM     | `"nmm"`         | In what order do attributes settle choices? | Decisiveness ranking             |
-| Marginal R-sq | `"marginal_r2"` | Which attributes did each respondent use?   | Per-respondent R-squared         |
+| Method        | `method =`      | Question                                           |
+|---------------|-----------------|----------------------------------------------------|
+| Random Forest | `"forest"`      | Which attribute levels matter most?                |
+| Decision Tree | `"tree"`        | How do respondents structure their decisions?      |
+| CRT/HierNet   | `"crt"`         | Which attribute levels genuinely drive choices?    |
+| Nested MM     | `"nmm"`         | In what order do attribute levels settle choices?  |
+| Marginal R-sq | `"marginal_r2"` | Which attributes did each respondent actually use? |
 
 ## Plot Customization
 

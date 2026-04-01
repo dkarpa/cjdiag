@@ -65,36 +65,34 @@
 <p>Standard conjoint analysis tools estimate Average Marginal Component
 Effects (AMCEs) — the causal effect of changing a single attribute
 level. AMCEs tell you <em>what</em> respondents prefer, but not
-<em>how</em> they decide: which attributes they actually look at, which
-ones they ignore, and in what order they process information.</p>
-<p><strong>cjdiag</strong> provides five methods that answer these
-diagnostic questions. All share a common API:</p>
-<pre><code><span><span class="va">fit</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, method <span class="op">=</span> <span class="st">"..."</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/importance.html">importance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre>
-<p>We’ll walk through each method using the bundled immigration conjoint
-dataset from Hainmueller &amp; Hopkins (2015).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<em>how</em> they decide: which attribute levels they actually attend
+to, which ones they ignore, and in what order they process
+information.</p>
+<p><strong>cjdiag</strong> fills this gap. It works at the level of
+individual <strong>attribute levels</strong> — not aggregated attributes
+— because the specific level (e.g., “no plans to look for work”, not
+just “Job Plans” as a whole) is what triggers respondent decisions.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dkarpa.github.io/cjdiag/">cjdiag</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">immig</span><span class="op">)</span></span></code></pre></div>
-<p>The <code>immig</code> dataset contains 2,000 rows (one per profile)
-from ~1,400 respondents evaluating immigrant profiles on 9
-attributes.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>We use the bundled immigration conjoint from Hainmueller &amp;
+Hopkins (2015): 2,000 profile evaluations, 9 attributes, ~50 attribute
+levels.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">Chosen_Immigrant</span> <span class="op">~</span> <span class="va">Gender</span> <span class="op">+</span> <span class="va">Education</span> <span class="op">+</span> <span class="va">LanguageSkills</span> <span class="op">+</span></span>
 <span>  <span class="va">CountryofOrigin</span> <span class="op">+</span> <span class="va">Job</span> <span class="op">+</span> <span class="va">JobExperience</span> <span class="op">+</span> <span class="va">JobPlans</span> <span class="op">+</span></span>
 <span>  <span class="va">ReasonforApplication</span> <span class="op">+</span> <span class="va">PriorEntry</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="random-forest-which-attributes-matter-most">1. Random Forest: Which attributes matter most?<a class="anchor" aria-label="anchor" href="#random-forest-which-attributes-matter-most"></a>
+<h2 id="random-forest-which-attribute-levels-matter-most">1. Random Forest: Which attribute levels matter most?<a class="anchor" aria-label="anchor" href="#random-forest-which-attribute-levels-matter-most"></a>
 </h2>
-<p>Random forests measure how much each attribute level contributes to
-predicting choices. The Mean Decrease in Accuracy (MDA) captures how
-much worse predictions get when a level’s values are shuffled. The root
-node rate tracks how often each level appears as the first split across
-hundreds of trees — a proxy for which cue respondents check first.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Random forests measure how much each individual attribute level
+contributes to predicting choices. The Mean Decrease in Accuracy (MDA)
+captures how much worse predictions get when that level’s values are
+shuffled — higher means more important. The root node rate tracks how
+often each level appears as the very first split, a proxy for which cue
+respondents check first.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span>
 <span><span class="va">rf</span></span>
 <span><span class="co">#&gt; Conjoint Random Forest </span></span>
@@ -122,78 +120,23 @@ hundreds of trees — a proxy for which cue respondents check first.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used interpreter           4.66      5.6</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq                       4.15      4.6</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor                    3.87      3</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="importance-plot">Importance plot<a class="anchor" aria-label="anchor" href="#importance-plot"></a>
-</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, top_n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/forest-plot-1.png" class="r-plt" alt="" width="672"></p>
-</div>
-<div class="section level3">
-<h3 id="attribute-ranking">Attribute ranking<a class="anchor" aria-label="anchor" href="#attribute-ranking"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/forest-rank-1.png" class="r-plt" alt="" width="672"></p>
-</div>
-<div class="section level3">
-<h3 id="combined-mda-root-node-rate">Combined MDA + root node rate<a class="anchor" aria-label="anchor" href="#combined-mda-root-node-rate"></a>
-</h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"combined"</span>, top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/forest-combined-1.png" class="r-plt" alt="" width="672"></p>
-</div>
-<div class="section level3">
-<h3 id="cumulative-importance">Cumulative importance<a class="anchor" aria-label="anchor" href="#cumulative-importance"></a>
-</h3>
-<p>How many levels does it take to account for most of the total
-importance?</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"cumulative_pct"</span>, top_n <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/forest-cumulative-1.png" class="r-plt" alt="" width="672"></p>
-</div>
-<div class="section level3">
-<h3 id="attribute-level-resolution">Attribute-level resolution<a class="anchor" aria-label="anchor" href="#attribute-level-resolution"></a>
-</h3>
-<p>Instead of individual levels, you can also measure importance at the
-attribute level:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rf_attr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"forest"</span>, resolution <span class="op">=</span> <span class="st">"attributes"</span><span class="op">)</span></span>
-<span><span class="va">rf_attr</span></span>
-<span><span class="co">#&gt; Conjoint Random Forest </span></span>
-<span><span class="co">#&gt; ====================== </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Resolution: attributes</span></span>
-<span><span class="co">#&gt; Trees: 500</span></span>
-<span><span class="co">#&gt; OOB Error: 40.2%</span></span>
-<span><span class="co">#&gt; Observations: 2,000</span></span>
-<span><span class="co">#&gt; Attributes: 9</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Top 9 attributes by MDA:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 5</span></span></span>
-<span><span class="co">#&gt;    rank attribute               mda   mdg root_pct</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 JobPlans             14.7    90.6     30.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 LanguageSkills        6.13   86.4     13  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 PriorEntry            5.89  110.      14.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 Job                   4.39  174.      14.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5 Education             4.36  133.      21.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     6 CountryofOrigin       2.61  190.       4  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>     7 ReasonforApplication  0.925  59.7      1.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>     8 Gender               -<span style="color: #BB0000;">1.23</span>   37.2      0  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span>     9 JobExperience        -<span style="color: #BB0000;">1.68</span>   93.6      0.8</span></span></code></pre></div>
-</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, top_n <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/forest-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<p>The top levels are specific: “no plans to look for work” (JobPlans),
+“no formal” education, “once without authorization” (PriorEntry),
+“fluent English”. These are the attribute levels that drive choices —
+not the attributes as aggregated categories.</p>
 </div>
 <div class="section level2">
-<h2 id="decision-tree-how-are-decisions-structured">2. Decision Tree: How are decisions structured?<a class="anchor" aria-label="anchor" href="#decision-tree-how-are-decisions-structured"></a>
+<h2 id="decision-tree-how-do-respondents-structure-their-decisions">2. Decision Tree: How do respondents structure their decisions?<a class="anchor" aria-label="anchor" href="#decision-tree-how-do-respondents-structure-their-decisions"></a>
 </h2>
-<p>A single classification tree reveals the hierarchical structure of
-choices. The root split identifies the <em>gatekeeper</em> attribute —
-the one that matters most. Deeper splits are conditional on earlier
-ones. Tree depth indicates how many attributes are needed to explain
-most choices.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p>A single classification tree reveals the hierarchical elimination
+structure. The root split is the <em>gatekeeper</em> — the attribute
+level that matters most. Deeper splits are conditional on earlier ones.
+The tree uses only a subset of available levels, consistent with
+respondents processing a few key cues rather than all information.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"tree"</span><span class="op">)</span></span>
 <span><span class="va">tr</span></span>
 <span><span class="co">#&gt; Conjoint Decision Tree </span></span>
@@ -222,22 +165,22 @@ most choices.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education      4th grade                       0   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 Education      8th grade                       0   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Education      graduate degree                 0</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/tree-plot-1.png" class="r-plt" alt="" width="864"></p>
+<p><img src="introduction_files/figure-html/tree-plot-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
-<h2 id="nested-marginal-means-in-what-order-do-attributes-settle-choices">3. Nested Marginal Means: In what order do attributes settle
-choices?<a class="anchor" aria-label="anchor" href="#nested-marginal-means-in-what-order-do-attributes-settle-choices"></a>
+<h2 id="nested-marginal-means-in-what-order-do-attribute-levels-settle-choices">3. Nested Marginal Means: In what order do attribute levels settle
+choices?<a class="anchor" aria-label="anchor" href="#nested-marginal-means-in-what-order-do-attribute-levels-settle-choices"></a>
 </h2>
 <p>Nested marginal means (Dill, Howlett &amp; Mueller-Crepon 2024) work
-through attributes one at a time. At each step, the method identifies
-the attribute level that most strongly tips choices away from 50/50 (the
-most <em>decisive</em> level), then removes tasks where that level
-cannot discriminate (because both profiles share it), and repeats. The
-result is a sequential ranking of which attribute levels settle choices
-first.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+through attribute levels sequentially. At each step, the method
+identifies the level whose marginal mean deviates most from 50/50 (the
+most <em>decisive</em> level), then removes choice tasks where that
+level cannot discriminate (because both profiles share it), and repeats.
+The cumulative plot shows how quickly the top levels account for the
+total decisiveness.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"nmm"</span>, resp_id <span class="op">=</span> <span class="st">"CaseID"</span>, n_boot <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">nmm</span></span>
 <span><span class="co">#&gt; Conjoint Nested Marginal Means </span></span>
@@ -265,22 +208,20 @@ first.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education       graduate degree         0.712        0.423          5.2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin China                   0.762        0.524          2.1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             nurse                   0.667        0.333          2.4</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="cumulative-explanatory-power">Cumulative explanatory power<a class="anchor" aria-label="anchor" href="#cumulative-explanatory-power"></a>
-</h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/nmm-cumulative-1.png" class="r-plt" alt="" width="672"></p>
-</div>
+<p><img src="introduction_files/figure-html/nmm-cumulative-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
-<h2 id="marginal-r-squared-which-attributes-did-each-respondent-use">4. Marginal R-squared: Which attributes did each respondent
-use?<a class="anchor" aria-label="anchor" href="#marginal-r-squared-which-attributes-did-each-respondent-use"></a>
+<h2 id="marginal-r-squared-which-attributes-did-each-respondent-actually-use">4. Marginal R-squared: Which attributes did each respondent actually
+use?<a class="anchor" aria-label="anchor" href="#marginal-r-squared-which-attributes-did-each-respondent-actually-use"></a>
 </h2>
 <p>For each individual respondent, marginal R-squared (Jenke et
 al. 2021) measures how well each attribute alone explains their choices.
-Respondents with R² = 0 for an attribute likely ignored it entirely.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+Respondents with R-squared near zero for an attribute likely ignored it
+entirely. This detects attribute non-attendance at the individual
+level.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"marginal_r2"</span>, resp_id <span class="op">=</span> <span class="st">"CaseID"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
 <span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
@@ -352,14 +293,14 @@ Respondents with R² = 0 for an attribute likely ignored it entirely.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 CountryofOrigin Germany      0.010<span style="text-decoration: underline;">8</span>          0.537   0.665        0.193</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="crthiernet-which-levels-genuinely-drive-choices">5. CRT/HierNet: Which levels genuinely drive choices?<a class="anchor" aria-label="anchor" href="#crthiernet-which-levels-genuinely-drive-choices"></a>
+<h2 id="crthiernet-which-attribute-levels-genuinely-drive-choices">5. CRT/HierNet: Which attribute levels genuinely drive choices?<a class="anchor" aria-label="anchor" href="#crthiernet-which-attribute-levels-genuinely-drive-choices"></a>
 </h2>
 <p>CRT applies increasing statistical penalty (L1 regularization via
-hierNet) to strip away weak signals. Levels that keep their effect even
-under heavy penalization genuinely drive choices; levels that vanish
-quickly are noise or redundant. Requires the <a href="https://cran.r-project.org/package=hierNet" class="external-link">hierNet</a>
+hierNet) to progressively strip away weak signals. Levels that keep
+their effect even under heavy penalization genuinely drive choices;
+levels that vanish quickly are noise or redundant. Requires the <a href="https://cran.r-project.org/package=hierNet" class="external-link">hierNet</a>
 package.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">crt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"crt"</span>,</span>
 <span>              lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>, n_folds <span class="op">=</span> <span class="fl">3</span>, n_perm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">crt</span></span>
@@ -391,174 +332,61 @@ package.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 ReasonforApplication seek better job           0.910         20</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="extracting-results">Extracting results<a class="anchor" aria-label="anchor" href="#extracting-results"></a>
-</h2>
-<p>The <code><a href="../reference/importance.html">importance()</a></code> function returns a standardized tibble
-from any model, making it easy to compare across methods:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/importance.html">importance</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span></span>
-<span><span class="va">imp</span></span>
-<span><span class="co">#&gt; Conjoint Importance Metrics </span></span>
-<span><span class="co">#&gt; =========================== </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Resolution: levels</span></span>
-<span><span class="co">#&gt; Method: Random Forest (500 trees)</span></span>
-<span><span class="co">#&gt; OOB Error: 40.3%</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Level Importance (top 10 ):</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 9</span></span></span>
-<span><span class="co">#&gt;     rank attribute       level       mda   mdg root_pct class_0 class_1 var_name</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans… 13.5   28.2     15.4  12.3      7.25 JobPlan…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract…  8.18  23.0     11.2   3.70     6.98 JobPlan…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal  7.87  18.7      7.4   8.04     2.38 Educati…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o…  7.42  22.9     10.4   6.87     3.66 PriorEn…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent E…  6.16  22.3      8.2   2.71     6.00 Languag…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as …  4.83  20.3      2.4   1.61     5.25 PriorEn…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college …  4.75  18.9      6.4   0.153    6.16 Educati…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used int…  4.66  20.2      5.6   4.91     1.37 Languag…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq       4.15  17.1      4.6   3.53     2.15 Country…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor    3.87  18.0      3     2.09     3.36 Jobjani…</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/importance-plot-1.png" class="r-plt" alt="" width="672"></p>
-<p>Results can also be converted to a data frame for further
-analysis:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   rank      attribute                     level       mda      mdg root_pct</span></span>
-<span><span class="co">#&gt; 1    1       JobPlans no plans to look for work 13.478845 28.16033     15.4</span></span>
-<span><span class="co">#&gt; 2    2       JobPlans    contract with employer  8.177931 22.97810     11.2</span></span>
-<span><span class="co">#&gt; 3    3      Education                 no formal  7.872982 18.74837      7.4</span></span>
-<span><span class="co">#&gt; 4    4     PriorEntry    once w/o authorization  7.416027 22.91502     10.4</span></span>
-<span><span class="co">#&gt; 5    5 LanguageSkills            fluent English  6.157514 22.27571      8.2</span></span>
-<span><span class="co">#&gt; 6    6     PriorEntry           once as tourist  4.827218 20.27154      2.4</span></span>
-<span><span class="co">#&gt;     class_0  class_1                          var_name</span></span>
-<span><span class="co">#&gt; 1 12.333363 7.250195 JobPlansno.plans.to.look.for.work</span></span>
-<span><span class="co">#&gt; 2  3.697133 6.978693    JobPlanscontract.with.employer</span></span>
-<span><span class="co">#&gt; 3  8.035186 2.376082                Educationno.formal</span></span>
-<span><span class="co">#&gt; 4  6.870653 3.664381  PriorEntryonce.w.o.authorization</span></span>
-<span><span class="co">#&gt; 5  2.712916 6.002354      LanguageSkillsfluent.English</span></span>
-<span><span class="co">#&gt; 6  1.607777 5.250203         PriorEntryonce.as.tourist</span></span></code></pre></div>
-<p>If <a href="https://cran.r-project.org/package=broom" class="external-link">broom</a> is
-installed, <code>tidy()</code> and <code>glance()</code> also work:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">generics</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 50 × 9</span></span></span>
-<span><span class="co">#&gt;     rank attribute       level       mda   mdg root_pct class_0 class_1 var_name</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans… 13.5   28.2     15.4  12.3      7.25 JobPlan…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract…  8.18  23.0     11.2   3.70     6.98 JobPlan…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal  7.87  18.7      7.4   8.04     2.38 Educati…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o…  7.42  22.9     10.4   6.87     3.66 PriorEn…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent E…  6.16  22.3      8.2   2.71     6.00 Languag…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as …  4.83  20.3      2.4   1.61     5.25 PriorEn…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college …  4.75  18.9      6.4   0.153    6.16 Educati…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used int…  4.66  20.2      5.6   4.91     1.37 Languag…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq       4.15  17.1      4.6   3.53     2.15 Country…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor    3.87  18.0      3     2.09     3.36 Jobjani…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 40 more rows</span></span></span>
-<span><span class="fu">generics</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
-<span><span class="co">#&gt;   method        n_obs ntree oob_error n_attributes n_levels</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> cjdiag_forest  <span style="text-decoration: underline;">2</span>000   500     0.403            9       50</span></span></code></pre></div>
-</div>
-<div class="section level2">
 <h2 id="plot-customization">Plot customization<a class="anchor" aria-label="anchor" href="#plot-customization"></a>
 </h2>
-<p>All plot methods return ggplot2 objects and accept these
-parameters:</p>
-<ul>
-<li>
-<code>palette</code>: <code>"default"</code>,
-<code>"colorblind"</code> (Okabe-Ito), or <code>"grey"</code>
-</li>
-<li>
-<code>base_size</code>: Font size (passed to theme)</li>
-<li>
-<code>label_wrap</code>: Character width for label wrapping</li>
-<li>
-<code>attribute.names</code>: Named vector to rename attributes in
-display</li>
-<li>
-<code>level.names</code>: Named vector to rename levels</li>
-<li>
-<code>theme</code>: A full ggplot2 theme object</li>
-</ul>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<p>All plot methods return ggplot2 objects and accept customization:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>,</span>
 <span>     palette <span class="op">=</span> <span class="st">"colorblind"</span>,</span>
-<span>     base_size <span class="op">=</span> <span class="fl">14</span>,</span>
 <span>     attribute.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>LanguageSkills <span class="op">=</span> <span class="st">"English Proficiency"</span>,</span>
 <span>                         JobPlans <span class="op">=</span> <span class="st">"Plans for Employment"</span><span class="op">)</span>,</span>
-<span>     top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/custom-plot-1.png" class="r-plt" alt="" width="672"></p>
-<div class="section level3">
-<h3 id="global-defaults">Global defaults<a class="anchor" aria-label="anchor" href="#global-defaults"></a>
-</h3>
-<p>Set defaults once and apply everywhere:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"colorblind"</span>, base_size <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/set_cjdiag_labels.html">set_cjdiag_labels</a></span><span class="op">(</span></span>
-<span>  attribute.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    LanguageSkills <span class="op">=</span> <span class="st">"English Proficiency"</span>,</span>
-<span>    JobPlans <span class="op">=</span> <span class="st">"Plans for Employment"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># All subsequent plots use these defaults</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/global-options-1.png" class="r-plt" alt="" width="672"></p>
-</div>
+<span>     top_n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<p><img src="introduction_files/figure-html/custom-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Three palettes: <code>"default"</code>, <code>"colorblind"</code>
+(Okabe-Ito), <code>"grey"</code>.</p>
+<p>Set global defaults with <code><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme()</a></code> and
+<code><a href="../reference/set_cjdiag_labels.html">set_cjdiag_labels()</a></code> so all plots use the same settings
+without repeating arguments.</p>
 </div>
 <div class="section level2">
 <h2 id="method-summary">Method summary<a class="anchor" aria-label="anchor" href="#method-summary"></a>
 </h2>
 <table class="table">
 <colgroup>
-<col width="19%">
-<col width="26%">
-<col width="24%">
-<col width="29%">
+<col width="27%">
+<col width="37%">
+<col width="34%">
 </colgroup>
 <thead><tr class="header">
 <th>Method</th>
 <th><code><a href="../reference/cj_fit.html">cj_fit()</a></code></th>
 <th>Question</th>
-<th>Key output</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>Random Forest</td>
 <td><code>"forest"</code></td>
-<td>Which attributes matter most?</td>
-<td>MDA ranking, root node rates</td>
+<td>Which attribute levels matter most?</td>
 </tr>
 <tr class="even">
 <td>Decision Tree</td>
 <td><code>"tree"</code></td>
-<td>How are decisions structured?</td>
-<td>Tree splits, gatekeeper</td>
+<td>How do respondents structure their decisions?</td>
 </tr>
 <tr class="odd">
 <td>Nested MM</td>
 <td><code>"nmm"</code></td>
-<td>In what order do attributes settle choices?</td>
-<td>Decisiveness ranking</td>
+<td>In what order do attribute levels settle choices?</td>
 </tr>
 <tr class="even">
 <td>Marginal R-sq</td>
 <td><code>"marginal_r2"</code></td>
-<td>Which attributes did each respondent use?</td>
-<td>Per-respondent R²</td>
+<td>Which attributes did each respondent actually use?</td>
 </tr>
 <tr class="odd">
 <td>CRT/HierNet</td>
 <td><code>"crt"</code></td>
-<td>Which levels genuinely drive choices?</td>
-<td>Lambda survival path</td>
+<td>Which attribute levels genuinely drive choices?</td>
 </tr>
 </tbody>
 </table>
