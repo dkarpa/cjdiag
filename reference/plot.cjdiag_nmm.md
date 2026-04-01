@@ -99,10 +99,10 @@ plot(nmm, type = "ranking", draw = FALSE)  # returns tibble
 #> # A tibble: 5 × 7
 #>    Rank Attribute Level    MM Decisiveness `% of Total` `Cumulative %`
 #>   <int> <chr>     <chr> <dbl>        <dbl>        <dbl>          <dbl>
-#> 1     1 b         q     0.357       0.286            42             42
-#> 2     2 a         x     0.6         0.200            30             72
-#> 3     3 a         y     0.6         0.200             0             72
-#> 4     4 b         p     0.533       0.0667           15             87
-#> 5     5 b         r     0.533       0.0667            0             87
+#> 1     1 b         r     0.413     1.74e- 1           46             46
+#> 2     2 b         q     0.4       2.00e- 1           20             66
+#> 3     3 b         p     0.5       2.22e-16            0             66
+#> 4     4 a         x     0.722     4.44e- 1           18             84
+#> 5     5 a         y     0.5       2.22e-16            0             84
 # }
 ```

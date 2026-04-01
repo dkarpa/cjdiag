@@ -4,7 +4,7 @@
 
 - [`cjdiag`](https://dkarpa.github.io/cjdiag/reference/cjdiag-package.md)
   [`cjdiag-package`](https://dkarpa.github.io/cjdiag/reference/cjdiag-package.md)
-  : cjdiag: Diagnostic Tools for Conjoint Experiments
+  : cjdiag: Diagnostic Tools for Conjoint Survey Experiments
 
 ## Model Fitting
 

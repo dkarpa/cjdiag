@@ -1,9 +1,8 @@
-# cjdiag: Diagnostic Tools for Conjoint Experiments
+# cjdiag: Diagnostic Tools for Conjoint Survey Experiments
 
-A unified toolkit for diagnosing conjoint survey experiments using
-machine learning (random forests, decision trees, L1-regularized
-logistic regression), non-compensatory decision models (nested marginal
-means), and per-respondent importance diagnostics (marginal R-squared).
+Tools for attribute-level importance and attendance in conjoint survey
+experiments — which attribute levels drive choices, how they rank, and
+which ones respondents ignore.
 
 ## Entry Points
 
@@ -35,4 +34,4 @@ to set global defaults.
 
 ## Author
 
-**Maintainer**: David <david@example.com>
+**Maintainer**: David Karpa <davidfkarpa@gmail.com>

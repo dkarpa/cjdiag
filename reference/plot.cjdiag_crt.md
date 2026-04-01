@@ -78,8 +78,8 @@ A ggplot object
 
 ``` r
 # \donttest{
-# CRT requires the CRTConjoint package
-if (requireNamespace("CRTConjoint", quietly = TRUE)) {
+# CRT requires the hierNet package
+if (requireNamespace("hierNet", quietly = TRUE)) {
   df <- data.frame(
     y = sample(0:1, 200, TRUE),
     a = factor(sample(c("x","y"), 200, TRUE)),
@@ -89,5 +89,6 @@ if (requireNamespace("CRTConjoint", quietly = TRUE)) {
                  lambda_grid = c(5, 10), n_folds = 2, n_perm = 2)
   plot(crt, type = "robustness")
 }
+
 # }
 ```

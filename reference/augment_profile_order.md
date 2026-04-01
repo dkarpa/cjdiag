@@ -40,12 +40,16 @@ the swapped copy (left/right exchanged, outcome inverted).
 
 ``` r
 # \donttest{
-if (requireNamespace("CRTConjoint", quietly = TRUE)) {
-  data("immigrationdata", package = "CRTConjoint")
-  left <- colnames(immigrationdata)[1:9]
-  right <- colnames(immigrationdata)[10:18]
-  augmented <- augment_profile_order(immigrationdata, "Y", left, right)
-  nrow(augmented)  # doubled
-}
+df <- data.frame(
+  y = sample(0:1, 100, TRUE),
+  left_a = factor(sample(c("x","y"), 100, TRUE)),
+  left_b = factor(sample(c("p","q"), 100, TRUE)),
+  right_a = factor(sample(c("x","y"), 100, TRUE)),
+  right_b = factor(sample(c("p","q"), 100, TRUE))
+)
+augmented <- augment_profile_order(df, "y",
+  left = c("left_a", "left_b"), right = c("right_a", "right_b"))
+nrow(augmented)  # doubled
+#> [1] 200
 # }
 ```
