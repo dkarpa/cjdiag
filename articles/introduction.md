@@ -147,30 +147,34 @@ that matters most. Deeper splits are conditional on earlier ones. Tree
 depth indicates how many attributes are needed to explain most choices.
 
 ``` r
-tr <- cj_fit(f, data = immig, method = "tree", resolution = "attributes")
+tr <- cj_fit(f, data = immig, method = "tree")
 tr
 #> Conjoint Decision Tree 
 #> ====================== 
 #> 
-#> Resolution: attributes
+#> Resolution: levels
 #> Complexity (cp): 0.005
-#> Root split: JobPlans
-#> Depth: 6
-#> Terminal nodes: 11
+#> Root split: JobPlansno.plans.to.look.for.work
+#> Depth: 4
+#> Terminal nodes: 6
 #> Observations: 2,000
+#> Levels: 50
 #> 
-#> Top 7 attributes by importance:
+#> Top 10 levels by importance:
 #> 
-#> # A tibble: 7 × 3
-#>    rank attribute            importance
-#>   <int> <chr>                     <dbl>
-#> 1     1 JobPlans                17.7   
-#> 2     2 PriorEntry              11.6   
-#> 3     3 Education                7.39  
-#> 4     4 Job                      6.88  
-#> 5     5 CountryofOrigin          4.00  
-#> 6     6 LanguageSkills           3.72  
-#> 7     7 ReasonforApplication     0.0635
+#> # A tibble: 10 × 4
+#>     rank attribute      level                     importance
+#>    <int> <chr>          <chr>                          <dbl>
+#>  1     1 JobPlans       no plans to look for work      15.0 
+#>  2     2 PriorEntry     once w/o authorization          6.51
+#>  3     3 Education      college degree                  3.81
+#>  4     4 LanguageSkills used interpreter                3.49
+#>  5     5 LanguageSkills fluent English                  3.21
+#>  6     6 Gender         female                          0   
+#>  7     7 Gender         male                            0   
+#>  8     8 Education      4th grade                       0   
+#>  9     9 Education      8th grade                       0   
+#> 10    10 Education      graduate degree                 0
 ```
 
 ``` r

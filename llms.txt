@@ -91,14 +91,30 @@ tr <- cj_fit(
     CountryofOrigin + Job + JobExperience + JobPlans +
     ReasonforApplication + PriorEntry,
   data = immig,
-  method = "tree",
-  resolution = "attributes"
+  method = "tree"
 )
 
 plot(tr)
 ```
 
 ![](reference/figures/README-tree-1.png)
+
+### Nested Marginal Means
+
+``` r
+nmm <- cj_fit(
+  Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+    CountryofOrigin + Job + JobExperience + JobPlans +
+    ReasonforApplication + PriorEntry,
+  data = immig,
+  method = "nmm",
+  resp_id = "CaseID"
+)
+
+plot(nmm, type = "ranking")
+```
+
+![](reference/figures/README-nmm-1.png)
 
 ## Methods
 
