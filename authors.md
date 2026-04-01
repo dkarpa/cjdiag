@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/dkarpa/cjdiag/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/dkarpa/cjdiag/blob/v0.2.0-beta/inst/CITATION)
 
 Karpa D (2026). *cjdiag: Diagnostic Tools for Conjoint Survey
 Experiments*. R package version 0.2.0,
