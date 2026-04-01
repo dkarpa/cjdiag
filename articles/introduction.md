@@ -79,14 +79,6 @@ plot(rf, top_n = 20)
 
 ![](introduction_files/figure-html/forest-plot-1.png)
 
-### Grouped by attribute
-
-``` r
-plot(rf, group_by_attribute = TRUE, top_n = 25)
-```
-
-![](introduction_files/figure-html/forest-grouped-1.png)
-
 ### Combined MDA + root node rate
 
 ``` r
@@ -178,10 +170,10 @@ tr
 ```
 
 ``` r
-plot(tr, type = "importance", top_n = 15)
+plot(tr)
 ```
 
-![](introduction_files/figure-html/tree-importance-1.png)
+![](introduction_files/figure-html/tree-plot-1.png)
 
 ## 3. Nested Marginal Means: In what order do attributes settle choices?
 
