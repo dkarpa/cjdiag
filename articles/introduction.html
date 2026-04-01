@@ -246,25 +246,26 @@ first.</p>
 <span><span class="co">#&gt; Observations: 2,000</span></span>
 <span><span class="co">#&gt; Attributes: 9</span></span>
 <span><span class="co">#&gt; Levels: 50</span></span>
+<span><span class="co">#&gt; Bootstrap iterations: 200</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Total pairs: 1,000</span></span>
 <span><span class="co">#&gt; After top 5: 205 (20.5% remaining)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Top 10 levels by decisiveness:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
-<span><span class="co">#&gt;     rank attribute       level                      mm decisiveness pct_of_total</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans to look for w… 0.305        0.389         38  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 Education       college degree          0.687        0.375         16  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal               0.331        0.339         12.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o authorization  0.303        0.395         11.9</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 Job             computer programmer     0.733        0.467          1.5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Job             doctor                  0.688        0.375          1.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 CountryofOrigin Somalia                 0.714        0.429          2.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education       graduate degree         0.712        0.423          5.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin China                   0.762        0.524          2.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             nurse                   0.667        0.333          2.4</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 8</span></span></span>
+<span><span class="co">#&gt;     rank attribute       level          mm decisiveness pct_of_total  q025  q975</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans t… 0.305        0.389         38    1     44  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 Education       college de… 0.687        0.375         16    1     27.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal   0.331        0.339         12.1  1     30  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o a… 0.303        0.395         11.9  1     50  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 Job             computer p… 0.733        0.467          1.5  2     37  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Job             doctor      0.688        0.375          1.6  1     38  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 CountryofOrigin Somalia     0.714        0.429          2.1  4     36.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education       graduate d… 0.712        0.423          5.2  4     29  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin China       0.762        0.524          2.1  5     32  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             nurse       0.667        0.333          2.4  4.98  40</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="decisiveness-ranking">Decisiveness ranking<a class="anchor" aria-label="anchor" href="#decisiveness-ranking"></a>
 </h3>
