@@ -194,37 +194,33 @@ the one that matters most. Deeper splits are conditional on earlier
 ones. Tree depth indicates how many attributes are needed to explain
 most choices.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"tree"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"tree"</span>, resolution <span class="op">=</span> <span class="st">"attributes"</span><span class="op">)</span></span>
 <span><span class="va">tr</span></span>
 <span><span class="co">#&gt; Conjoint Decision Tree </span></span>
 <span><span class="co">#&gt; ====================== </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Resolution: levels</span></span>
+<span><span class="co">#&gt; Resolution: attributes</span></span>
 <span><span class="co">#&gt; Complexity (cp): 0.005</span></span>
-<span><span class="co">#&gt; Root split: JobPlansno.plans.to.look.for.work</span></span>
-<span><span class="co">#&gt; Depth: 4</span></span>
-<span><span class="co">#&gt; Terminal nodes: 6</span></span>
+<span><span class="co">#&gt; Root split: JobPlans</span></span>
+<span><span class="co">#&gt; Depth: 6</span></span>
+<span><span class="co">#&gt; Terminal nodes: 11</span></span>
 <span><span class="co">#&gt; Observations: 2,000</span></span>
-<span><span class="co">#&gt; Levels: 50</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Top 10 levels by importance:</span></span>
+<span><span class="co">#&gt; Top 7 attributes by importance:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
-<span><span class="co">#&gt;     rank attribute      level                     importance</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans       no plans to look for work      15.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 PriorEntry     once w/o authorization          6.51</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education      college degree                  3.81</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 LanguageSkills used interpreter                3.49</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills fluent English                  3.21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Gender         female                          0   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Gender         male                            0   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education      4th grade                       0   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 Education      8th grade                       0   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Education      graduate degree                 0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 3</span></span></span>
+<span><span class="co">#&gt;    rank attribute            importance</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 JobPlans                17.7   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 PriorEntry              11.6   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 Education                7.39  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 Job                      6.88  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5 CountryofOrigin          4.00  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>     6 LanguageSkills           3.72  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>     7 ReasonforApplication     0.063<span style="text-decoration: underline;">5</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="introduction_files/figure-html/tree-plot-1.png" class="r-plt" alt="" width="768"></p>
+<p><img src="introduction_files/figure-html/tree-plot-1.png" class="r-plt" alt="" width="864"></p>
 </div>
 <div class="section level2">
 <h2 id="nested-marginal-means-in-what-order-do-attributes-settle-choices">3. Nested Marginal Means: In what order do attributes settle

@@ -91,7 +91,8 @@ tr <- cj_fit(
     CountryofOrigin + Job + JobExperience + JobPlans +
     ReasonforApplication + PriorEntry,
   data = immig,
-  method = "tree"
+  method = "tree",
+  resolution = "attributes"
 )
 
 plot(tr)
