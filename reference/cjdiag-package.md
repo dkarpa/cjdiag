@@ -32,6 +32,17 @@ and
 [`set_cjdiag_labels()`](https://dkarpa.github.io/cjdiag/reference/set_cjdiag_labels.md)
 to set global defaults.
 
+## See also
+
+Useful links:
+
+- <https://dkarpa.github.io/cjdiag/>
+
+- <https://github.com/dkarpa/cjdiag>
+
+- Report bugs at <https://github.com/dkarpa/cjdiag/issues>
+
 ## Author
 
 **Maintainer**: David Karpa <davidfkarpa@gmail.com>
+([ORCID](https://orcid.org/0000-0002-4327-4269)) \[copyright holder\]

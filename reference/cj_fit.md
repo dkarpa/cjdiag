@@ -115,40 +115,45 @@ support [`print()`](https://rdrr.io/r/base/print.html),
 
 - `"forest"` (Random Forest):
 
-  Fits a random forest to dummy-coded attribute levels. Returns Mean
-  Decrease in Accuracy (MDA), Mean Decrease in Gini (MDG), and root node
-  appearance rates. MDA measures how much prediction accuracy drops when
-  a level is permuted — higher = more important. Supports both level and
-  attribute resolution.
+  Which attributes matter most for choices? Measures how much each
+  attribute level matters by shuffling its values and checking how much
+  worse predictions get (Mean Decrease in Accuracy). Also tracks which
+  attribute appears first across hundreds of trees — a proxy for which
+  cue respondents check first. Supports both level and attribute
+  resolution.
 
 - `"tree"` (Decision Tree):
 
-  Fits an rpart classification tree. Reveals the hierarchical decision
-  structure: the root split is the most important attribute level,
-  deeper splits are conditional on earlier ones. Tree depth indicates
-  decision complexity. Supports both resolutions.
+  How do respondents structure their decisions? Fits a single
+  classification tree that reveals the hierarchical structure of choices
+  — which attribute acts as the gatekeeper, which attributes matter only
+  conditionally, and how many attributes are needed to explain most
+  choices. Supports both resolutions.
 
 - `"crt"` (CRT/HierNet):
 
-  L1-regularized logistic regression across a lambda grid (Ham, Imai &
-  Janson 2024). Levels that survive high regularization are robust
-  predictors; levels that drop out early are weak. Reports max lambda
-  survived and permutation MDA. Levels only.
+  Which attribute levels genuinely drive choices? Applies increasing
+  amounts of statistical penalty to strip away weak signals (Bien and
+  Tibshirani 2014). Levels that keep their effect even under heavy
+  penalization genuinely drive choices; levels that vanish quickly are
+  noise or redundant. Levels only.
 
 - `"nmm"` (Nested Marginal Means):
 
-  Sequential elimination procedure (Dill, Howlett & Mueller-Crepon
-  2024). At each step, the most decisive attribute level is identified
-  and ambiguous pairs are removed. Decisiveness = \|MM - 0.5\| \* 2.
-  Reveals the sequential decision order. Requires `resp_id`. Levels
-  only.
+  In what order do attributes settle choices? Works through attributes
+  one at a time, starting with the most decisive (Dill, Howlett and
+  Mueller-Crepon 2024). At each step, identifies the attribute level
+  that most strongly tips choices away from 50/50, removes tasks where
+  that level cannot discriminate, and repeats. Requires `resp_id`.
+  Levels only.
 
 - `"marginal_r2"` (Marginal R-squared):
 
-  Per-respondent importance metric (Jenke et al. 2021). For each
-  respondent, regresses choices on each attribute separately and
-  computes adjusted R-squared. Respondents with R-squared = 0 for an
-  attribute likely ignored it. Requires `resp_id`.
+  Which attributes did each respondent actually use? For each individual
+  respondent, measures how well each attribute alone explains their
+  choices (Jenke, Bansak, Hainmueller and Hangartner 2021). Respondents
+  with zero explanatory power for an attribute likely ignored it
+  entirely. Requires `resp_id`.
 
 ## Examples
 
