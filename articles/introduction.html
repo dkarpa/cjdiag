@@ -107,19 +107,19 @@ respondents check first.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Top 10 levels by MDA:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
-<span><span class="co">#&gt;     rank attribute       level                       mda root_pct</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans to look for work 13.5      15.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract with employer     8.18     11.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal                  7.87      7.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o authorization     7.42     10.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent English             6.16      8.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as tourist            4.83      2.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college degree             4.75      6.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used interpreter           4.66      5.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq                       4.15      4.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor                    3.87      3</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 7</span></span></span>
+<span><span class="co">#&gt;     rank attribute       level                      mda root_pct class_0 class_1</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans to look for wo… 13.5      15.4  12.3      7.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract with employer    8.18     11.2   3.70     6.98</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal                 7.87      7.4   8.04     2.38</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o authorization    7.42     10.4   6.87     3.66</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent English            6.16      8.2   2.71     6.00</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as tourist           4.83      2.4   1.61     5.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college degree            4.75      6.4   0.153    6.16</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used interpreter          4.66      5.6   4.91     1.37</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq                      4.15      4.6   3.53     2.15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor                   3.87      3     2.09     3.36</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, top_n <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/forest-plot-1.png" class="r-plt" alt="" width="100%"></p>
@@ -127,6 +127,28 @@ respondents check first.</p>
 “no formal” education, “once without authorization” (PriorEntry),
 “fluent English”. These are the attribute levels that drive choices —
 not the attributes as aggregated categories.</p>
+<p>The full results table is available as a tibble:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rf</span><span class="op">$</span><span class="va">results</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 50 × 9</span></span></span>
+<span><span class="co">#&gt;     rank attribute       level       mda   mdg root_pct class_0 class_1 var_name</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans… 13.5   28.2     15.4  12.3      7.25 JobPlan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract…  8.18  23.0     11.2   3.70     6.98 JobPlan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal  7.87  18.7      7.4   8.04     2.38 Educati…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o…  7.42  22.9     10.4   6.87     3.66 PriorEn…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent E…  6.16  22.3      8.2   2.71     6.00 Languag…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as …  4.83  20.3      2.4   1.61     5.25 PriorEn…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college …  4.75  18.9      6.4   0.153    6.16 Educati…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used int…  4.66  20.2      5.6   4.91     1.37 Languag…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq       4.15  17.1      4.6   3.53     2.15 Country…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor    3.87  18.0      3     2.09     3.36 Jobjani…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 40 more rows</span></span></span></code></pre></div>
+<p>Key columns: <strong>mda</strong> (Mean Decrease in Accuracy),
+<strong>root_pct</strong> (% of trees where this level is the first
+split), <strong>class_0</strong> and <strong>class_1</strong>
+(class-specific importance — how much the level matters for rejecting vs
+selecting a profile).</p>
 </div>
 <div class="section level2">
 <h2 id="decision-tree-how-do-respondents-structure-their-decisions">2. Decision Tree: How do respondents structure their decisions?<a class="anchor" aria-label="anchor" href="#decision-tree-how-do-respondents-structure-their-decisions"></a>
@@ -136,7 +158,7 @@ structure. The root split is the <em>gatekeeper</em> — the attribute
 level that matters most. Deeper splits are conditional on earlier ones.
 The tree uses only a subset of available levels, consistent with
 respondents processing a few key cues rather than all information.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"tree"</span><span class="op">)</span></span>
 <span><span class="va">tr</span></span>
 <span><span class="co">#&gt; Conjoint Decision Tree </span></span>
@@ -165,7 +187,7 @@ respondents processing a few key cues rather than all information.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education      4th grade                       0   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 Education      8th grade                       0   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Education      graduate degree                 0</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tr</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/tree-plot-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
@@ -180,7 +202,7 @@ most <em>decisive</em> level), then removes choice tasks where that
 level cannot discriminate (because both profiles share it), and repeats.
 The cumulative plot shows how quickly the top levels account for the
 total decisiveness.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"nmm"</span>, resp_id <span class="op">=</span> <span class="st">"CaseID"</span>, n_boot <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">nmm</span></span>
 <span><span class="co">#&gt; Conjoint Nested Marginal Means </span></span>
@@ -208,7 +230,7 @@ total decisiveness.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 Education       graduate degree         0.712        0.423          5.2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin China                   0.762        0.524          2.1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             nurse                   0.667        0.333          2.4</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span><span class="op">)</span></span></code></pre></div>
 <p><img src="introduction_files/figure-html/nmm-cumulative-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
@@ -221,7 +243,7 @@ al. 2021) measures how well each attribute alone explains their choices.
 Respondents with R-squared near zero for an attribute likely ignored it
 entirely. This detects attribute non-attendance at the individual
 level.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"marginal_r2"</span>, resp_id <span class="op">=</span> <span class="st">"CaseID"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
 <span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
@@ -300,7 +322,7 @@ hierNet) to progressively strip away weak signals. Levels that keep
 their effect even under heavy penalization genuinely drive choices;
 levels that vanish quickly are noise or redundant. Requires the <a href="https://cran.r-project.org/package=hierNet" class="external-link">hierNet</a>
 package.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">crt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"crt"</span>,</span>
 <span>              lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>, n_folds <span class="op">=</span> <span class="fl">3</span>, n_perm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">crt</span></span>
@@ -335,7 +357,7 @@ package.</p>
 <h2 id="plot-customization">Plot customization<a class="anchor" aria-label="anchor" href="#plot-customization"></a>
 </h2>
 <p>All plot methods return ggplot2 objects and accept customization:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>,</span>
 <span>     palette <span class="op">=</span> <span class="st">"colorblind"</span>,</span>
 <span>     attribute.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>LanguageSkills <span class="op">=</span> <span class="st">"English Proficiency"</span>,</span>

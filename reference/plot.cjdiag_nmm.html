@@ -42,9 +42,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'cjdiag_nmm'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"ranking"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"cumulative"</span>,</span>
 <span>  top_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  draw <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  base_size <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  colors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -65,16 +64,11 @@
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Plot type: <code>"ranking"</code> (default), <code>"cumulative"</code>, <code>"decisiveness"</code>, or <code>"sample"</code>.</p></dd>
+<dd><p>Plot type: <code>"cumulative"</code> (default), <code>"decisiveness"</code>, or <code>"sample"</code>.</p></dd>
 
 
 <dt id="arg-top-n">top_n<a class="anchor" aria-label="anchor" href="#arg-top-n"></a></dt>
 <dd><p>Number of levels to display (default 25; NULL = all).</p></dd>
-
-
-<dt id="arg-draw">draw<a class="anchor" aria-label="anchor" href="#arg-draw"></a></dt>
-<dd><p>For <code>type = "ranking"</code>: if <code>TRUE</code> (default), returns a ggplot; if <code>FALSE</code>,
-returns the ranking tibble.</p></dd>
 
 
 <dt id="arg-base-size">base_size<a class="anchor" aria-label="anchor" href="#arg-base-size"></a></dt>
@@ -111,7 +105,7 @@ returns the ranking tibble.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A ggplot object (default) or a tibble (when <code>type = "ranking"</code> and <code>draw = FALSE</code>)</p>
+    <p>A ggplot object</p>
     </div>
 
     <div class="section level2">
@@ -123,11 +117,11 @@ returns the ranking tibble.</p></dd>
 <span class="r-in"><span>  b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p"</span>,<span class="st">"q"</span>,<span class="st">"r"</span><span class="op">)</span>, <span class="fl">200</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">nmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span>, data <span class="op">=</span> <span class="va">df</span>, method <span class="op">=</span> <span class="st">"nmm"</span>, resp_id <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"decisiveness"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">nmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span>, data <span class="op">=</span> <span class="va">df</span>, method <span class="op">=</span> <span class="st">"nmm"</span>, resp_id <span class="op">=</span> <span class="st">"id"</span>, n_boot <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.cjdiag_nmm-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"ranking"</span>, draw <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># returns tibble</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in match.arg(type, c("cumulative", "decisiveness", "sample")):</span> 'arg' should be one of “cumulative”, “decisiveness”, “sample”</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm</span>, type <span class="op">=</span> <span class="st">"decisiveness"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot.cjdiag_nmm-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

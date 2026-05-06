@@ -13,7 +13,7 @@ immig
 
 ## Format
 
-A data frame with 13,960 rows and 16 columns:
+A data frame with 13,960 rows and 13 columns:
 
 - CaseID:
 

@@ -14,6 +14,7 @@ level (e.g., “no plans to look for work”, not just “Job Plans” as a
 whole) is what triggers respondent decisions.
 
 ``` r
+
 library(cjdiag)
 data(immig)
 ```
@@ -22,6 +23,7 @@ We use the bundled immigration conjoint from Hainmueller & Hopkins
 (2015): 2,000 profile evaluations, 9 attributes, ~50 attribute levels.
 
 ``` r
+
 f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
   CountryofOrigin + Job + JobExperience + JobPlans +
   ReasonforApplication + PriorEntry
@@ -37,6 +39,7 @@ often each level appears as the very first split, a proxy for which cue
 respondents check first.
 
 ``` r
+
 rf <- cj_fit(f, data = immig, method = "forest")
 rf
 #> Conjoint Random Forest 
@@ -51,22 +54,23 @@ rf
 #> 
 #> Top 10 levels by MDA:
 #> 
-#> # A tibble: 10 × 5
-#>     rank attribute       level                       mda root_pct
-#>    <int> <chr>           <chr>                     <dbl>    <dbl>
-#>  1     1 JobPlans        no plans to look for work 13.5      15.4
-#>  2     2 JobPlans        contract with employer     8.18     11.2
-#>  3     3 Education       no formal                  7.87      7.4
-#>  4     4 PriorEntry      once w/o authorization     7.42     10.4
-#>  5     5 LanguageSkills  fluent English             6.16      8.2
-#>  6     6 PriorEntry      once as tourist            4.83      2.4
-#>  7     7 Education       college degree             4.75      6.4
-#>  8     8 LanguageSkills  used interpreter           4.66      5.6
-#>  9     9 CountryofOrigin Iraq                       4.15      4.6
-#> 10    10 Job             janitor                    3.87      3
+#> # A tibble: 10 × 7
+#>     rank attribute       level                      mda root_pct class_0 class_1
+#>    <int> <chr>           <chr>                    <dbl>    <dbl>   <dbl>   <dbl>
+#>  1     1 JobPlans        no plans to look for wo… 13.5      15.4  12.3      7.25
+#>  2     2 JobPlans        contract with employer    8.18     11.2   3.70     6.98
+#>  3     3 Education       no formal                 7.87      7.4   8.04     2.38
+#>  4     4 PriorEntry      once w/o authorization    7.42     10.4   6.87     3.66
+#>  5     5 LanguageSkills  fluent English            6.16      8.2   2.71     6.00
+#>  6     6 PriorEntry      once as tourist           4.83      2.4   1.61     5.25
+#>  7     7 Education       college degree            4.75      6.4   0.153    6.16
+#>  8     8 LanguageSkills  used interpreter          4.66      5.6   4.91     1.37
+#>  9     9 CountryofOrigin Iraq                      4.15      4.6   3.53     2.15
+#> 10    10 Job             janitor                   3.87      3     2.09     3.36
 ```
 
 ``` r
+
 plot(rf, top_n = 25)
 ```
 
@@ -77,6 +81,32 @@ formal” education, “once without authorization” (PriorEntry), “fluent
 English”. These are the attribute levels that drive choices — not the
 attributes as aggregated categories.
 
+The full results table is available as a tibble:
+
+``` r
+
+rf$results
+#> # A tibble: 50 × 9
+#>     rank attribute       level       mda   mdg root_pct class_0 class_1 var_name
+#>    <int> <chr>           <chr>     <dbl> <dbl>    <dbl>   <dbl>   <dbl> <chr>   
+#>  1     1 JobPlans        no plans… 13.5   28.2     15.4  12.3      7.25 JobPlan…
+#>  2     2 JobPlans        contract…  8.18  23.0     11.2   3.70     6.98 JobPlan…
+#>  3     3 Education       no formal  7.87  18.7      7.4   8.04     2.38 Educati…
+#>  4     4 PriorEntry      once w/o…  7.42  22.9     10.4   6.87     3.66 PriorEn…
+#>  5     5 LanguageSkills  fluent E…  6.16  22.3      8.2   2.71     6.00 Languag…
+#>  6     6 PriorEntry      once as …  4.83  20.3      2.4   1.61     5.25 PriorEn…
+#>  7     7 Education       college …  4.75  18.9      6.4   0.153    6.16 Educati…
+#>  8     8 LanguageSkills  used int…  4.66  20.2      5.6   4.91     1.37 Languag…
+#>  9     9 CountryofOrigin Iraq       4.15  17.1      4.6   3.53     2.15 Country…
+#> 10    10 Job             janitor    3.87  18.0      3     2.09     3.36 Jobjani…
+#> # ℹ 40 more rows
+```
+
+Key columns: **mda** (Mean Decrease in Accuracy), **root_pct** (% of
+trees where this level is the first split), **class_0** and **class_1**
+(class-specific importance — how much the level matters for rejecting vs
+selecting a profile).
+
 ## 2. Decision Tree: How do respondents structure their decisions?
 
 A single classification tree reveals the hierarchical elimination
@@ -86,6 +116,7 @@ uses only a subset of available levels, consistent with respondents
 processing a few key cues rather than all information.
 
 ``` r
+
 tr <- cj_fit(f, data = immig, method = "tree")
 tr
 #> Conjoint Decision Tree 
@@ -117,6 +148,7 @@ tr
 ```
 
 ``` r
+
 plot(tr)
 ```
 
@@ -132,6 +164,7 @@ level), then removes choice tasks where that level cannot discriminate
 how quickly the top levels account for the total decisiveness.
 
 ``` r
+
 nmm <- cj_fit(f, data = immig, method = "nmm", resp_id = "CaseID", n_boot = 0)
 nmm
 #> Conjoint Nested Marginal Means 
@@ -162,6 +195,7 @@ nmm
 ```
 
 ``` r
+
 plot(nmm)
 ```
 
@@ -175,6 +209,7 @@ Respondents with R-squared near zero for an attribute likely ignored it
 entirely. This detects attribute non-attendance at the individual level.
 
 ``` r
+
 mr2 <- cj_fit(f, data = immig, method = "marginal_r2", resp_id = "CaseID")
 #> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
 #> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
@@ -255,6 +290,7 @@ levels that vanish quickly are noise or redundant. Requires the
 [hierNet](https://cran.r-project.org/package=hierNet) package.
 
 ``` r
+
 crt <- cj_fit(f, data = immig, method = "crt",
               lambda_grid = c(5, 10, 20, 50), n_folds = 3, n_perm = 5)
 crt
@@ -291,6 +327,7 @@ crt
 All plot methods return ggplot2 objects and accept customization:
 
 ``` r
+
 plot(rf,
      palette = "colorblind",
      attribute.names = c(LanguageSkills = "English Proficiency",
@@ -310,10 +347,10 @@ so all plots use the same settings without repeating arguments.
 
 ## Method summary
 
-| Method        | [`cj_fit()`](https://dkarpa.github.io/cjdiag/reference/cj_fit.md) | Question                                           |
-|---------------|-------------------------------------------------------------------|----------------------------------------------------|
-| Random Forest | `"forest"`                                                        | Which attribute levels matter most?                |
-| Decision Tree | `"tree"`                                                          | How do respondents structure their decisions?      |
-| Nested MM     | `"nmm"`                                                           | In what order do attribute levels settle choices?  |
-| Marginal R-sq | `"marginal_r2"`                                                   | Which attributes did each respondent actually use? |
-| CRT/HierNet   | `"crt"`                                                           | Which attribute levels genuinely drive choices?    |
+| Method | [`cj_fit()`](https://dkarpa.github.io/cjdiag/reference/cj_fit.md) | Question |
+|----|----|----|
+| Random Forest | `"forest"` | Which attribute levels matter most? |
+| Decision Tree | `"tree"` | How do respondents structure their decisions? |
+| Nested MM | `"nmm"` | In what order do attribute levels settle choices? |
+| Marginal R-sq | `"marginal_r2"` | Which attributes did each respondent actually use? |
+| CRT/HierNet | `"crt"` | Which attribute levels genuinely drive choices? |

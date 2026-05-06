@@ -115,12 +115,13 @@ support [`print()`](https://rdrr.io/r/base/print.html),
 
 - `"forest"` (Random Forest):
 
-  Which attributes matter most for choices? Measures how much each
+  Which attribute levels matter most for choices? Measures how much each
   attribute level matters by shuffling its values and checking how much
   worse predictions get (Mean Decrease in Accuracy). Also tracks which
-  attribute appears first across hundreds of trees — a proxy for which
-  cue respondents check first. Supports both level and attribute
-  resolution.
+  level appears first across hundreds of trees (root node rate) — a
+  proxy for which cue respondents check first. Returns class-specific
+  importance (class_0, class_1) showing whether a level matters more for
+  rejection or selection. Supports both level and attribute resolution.
 
 - `"tree"` (Decision Tree):
 
@@ -175,19 +176,19 @@ print(rf)
 #> 
 #> Top 10 levels by MDA:
 #> 
-#> # A tibble: 10 × 5
-#>     rank attribute      level                       mda root_pct
-#>    <int> <chr>          <chr>                     <dbl>    <dbl>
-#>  1     1 JobPlans       no plans to look for work 16.7      17.4
-#>  2     2 LanguageSkills fluent English            12.3      11.2
-#>  3     3 Education      no formal                 12.0       8.8
-#>  4     4 LanguageSkills used interpreter          11.5       8.4
-#>  5     5 JobPlans       contract with employer    10.3      13.2
-#>  6     6 Education      college degree             7.84      9  
-#>  7     7 Job            janitor                    5.55      6.8
-#>  8     8 Job            doctor                     4.50      3.6
-#>  9     9 Education      graduate degree            3.27      2  
-#> 10    10 Job            gardener                   2.74      0.6
+#> # A tibble: 10 × 7
+#>     rank attribute      level                       mda root_pct class_0 class_1
+#>    <int> <chr>          <chr>                     <dbl>    <dbl>   <dbl>   <dbl>
+#>  1     1 JobPlans       no plans to look for work 16.7      17.4  14.1     7.69 
+#>  2     2 LanguageSkills fluent English            12.3      11.2   5.68   10.8  
+#>  3     3 Education      no formal                 12.0       8.8  14.0     1.96 
+#>  4     4 LanguageSkills used interpreter          11.5       8.4   9.62    5.42 
+#>  5     5 JobPlans       contract with employer    10.3      13.2   2.23   11.2  
+#>  6     6 Education      college degree             7.84      9     3.91    6.30 
+#>  7     7 Job            janitor                    5.55      6.8   4.53    2.78 
+#>  8     8 Job            doctor                     4.50      3.6   2.09    3.85 
+#>  9     9 Education      graduate degree            3.27      2     0.983   3.24 
+#> 10    10 Job            gardener                   2.74      0.6   3.86   -0.152
 plot(rf)
 
 summary(rf)

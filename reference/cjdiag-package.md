@@ -12,6 +12,7 @@ which ones respondents ignore.
 
 ## Common Workflow
 
+
     # 1. Fit a model
     rf <- cj_fit(outcome ~ attr1 + attr2, data = df, method = "forest")
 

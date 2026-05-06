@@ -8,9 +8,8 @@ Plot Nested Marginal Means Results
 # S3 method for class 'cjdiag_nmm'
 plot(
   x,
-  type = "ranking",
+  type = "cumulative",
   top_n = NULL,
-  draw = TRUE,
   base_size = NULL,
   colors = NULL,
   palette = NULL,
@@ -31,17 +30,11 @@ plot(
 
 - type:
 
-  Plot type: `"ranking"` (default), `"cumulative"`, `"decisiveness"`, or
-  `"sample"`.
+  Plot type: `"cumulative"` (default), `"decisiveness"`, or `"sample"`.
 
 - top_n:
 
   Number of levels to display (default 25; NULL = all).
-
-- draw:
-
-  For `type = "ranking"`: if `TRUE` (default), returns a ggplot; if
-  `FALSE`, returns the ranking tibble.
 
 - base_size:
 
@@ -79,8 +72,7 @@ plot(
 
 ## Value
 
-A ggplot object (default) or a tibble (when `type = "ranking"` and
-`draw = FALSE`)
+A ggplot object
 
 ## Examples
 
@@ -92,10 +84,10 @@ df <- data.frame(
   b = factor(sample(c("p","q","r"), 200, TRUE)),
   id = rep(1:100, each = 2)
 )
-nmm <- cj_fit(y ~ a + b, data = df, method = "nmm", resp_id = "id")
+nmm <- cj_fit(y ~ a + b, data = df, method = "nmm", resp_id = "id", n_boot = 0)
+plot(nmm)
+
 plot(nmm, type = "decisiveness")
 
-plot(nmm, type = "ranking", draw = FALSE)  # returns tibble
-#> Error in match.arg(type, c("cumulative", "decisiveness", "sample")): 'arg' should be one of “cumulative”, “decisiveness”, “sample”
 # }
 ```

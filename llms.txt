@@ -20,6 +20,7 @@ decision process behind conjoint choices.
 ## Installation
 
 ``` r
+
 # Install from GitHub (CRAN submission pending)
 # install.packages("pak")
 pak::pak("dkarpa/cjdiag")
@@ -28,6 +29,7 @@ pak::pak("dkarpa/cjdiag")
 ## Quick Start
 
 ``` r
+
 library(cjdiag)
 data(immig)
 
@@ -70,6 +72,7 @@ rf
 ### Importance Plot
 
 ``` r
+
 plot(rf, top_n = 20)
 ```
 
@@ -78,6 +81,7 @@ plot(rf, top_n = 20)
 ### Decision Tree
 
 ``` r
+
 tr <- cj_fit(
   Chosen_Immigrant ~ Gender + Education + LanguageSkills +
     CountryofOrigin + Job + JobExperience + JobPlans +
@@ -94,6 +98,7 @@ plot(tr)
 ### Nested Marginal Means
 
 ``` r
+
 nmm <- cj_fit(
   Chosen_Immigrant ~ Gender + Education + LanguageSkills +
     CountryofOrigin + Job + JobExperience + JobPlans +
@@ -114,12 +119,12 @@ plot(nmm, type = "cumulative")
 All methods are accessed through a single function:
 `cj_fit(formula, data, method)`.
 
-| Method        | `method =`      | Question                                           |
-|---------------|-----------------|----------------------------------------------------|
-| Random Forest | `"forest"`      | Which attribute levels matter most?                |
-| Decision Tree | `"tree"`        | How do respondents structure their decisions?      |
-| CRT/HierNet   | `"crt"`         | Which attribute levels genuinely drive choices?    |
-| Nested MM     | `"nmm"`         | In what order do attribute levels settle choices?  |
+| Method | `method =` | Question |
+|----|----|----|
+| Random Forest | `"forest"` | Which attribute levels matter most? |
+| Decision Tree | `"tree"` | How do respondents structure their decisions? |
+| CRT/HierNet | `"crt"` | Which attribute levels genuinely drive choices? |
+| Nested MM | `"nmm"` | In what order do attribute levels settle choices? |
 | Marginal R-sq | `"marginal_r2"` | Which attributes did each respondent actually use? |
 
 ## Plot Customization
@@ -128,6 +133,7 @@ All plot methods return ggplot2 objects and accept customization
 parameters:
 
 ``` r
+
 # Colorblind-safe palette
 plot(rf, palette = "colorblind")
 
@@ -171,6 +177,7 @@ vignette](https://dkarpa.github.io/cjdiag/articles/introduction.html).
 ## Citation
 
 ``` r
+
 citation("cjdiag")
 ```
 

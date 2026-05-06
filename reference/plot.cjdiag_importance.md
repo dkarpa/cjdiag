@@ -30,8 +30,8 @@ plot(
 
 - type:
 
-  Plot type: `"mda"` (default), `"root"`, `"combined"`, or
-  `"cumulative"`
+  Plot type: `"mda"` (default), `"root"`, `"combined"`, `"cumulative"`,
+  or `"cumulative_pct"`
 
 - top_n:
 
