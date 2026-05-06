@@ -11,13 +11,13 @@ Source:
 [`inst/CITATION`](https://github.com/dkarpa/cjdiag/blob/main/inst/CITATION)
 
 Karpa D (2026). *cjdiag: Diagnostic Tools for Conjoint Survey
-Experiments*. R package version 0.2.0,
+Experiments*. R package version 0.2.1,
 <https://github.com/dkarpa/cjdiag>.
 
     @Manual{,
       title = {cjdiag: Diagnostic Tools for Conjoint Survey Experiments},
       author = {David Karpa},
       year = {2026},
-      note = {R package version 0.2.0},
+      note = {R package version 0.2.1},
       url = {https://github.com/dkarpa/cjdiag},
     }

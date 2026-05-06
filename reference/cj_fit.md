@@ -133,11 +133,11 @@ support [`print()`](https://rdrr.io/r/base/print.html),
 
 - `"crt"` (CRT/HierNet):
 
-  Which attribute levels genuinely drive choices? Applies increasing
-  amounts of statistical penalty to strip away weak signals (Bien and
-  Tibshirani 2014). Levels that keep their effect even under heavy
-  penalization genuinely drive choices; levels that vanish quickly are
-  noise or redundant. Levels only.
+  Which attribute levels survive a strict signal-vs-noise test? Applies
+  increasing amounts of statistical penalty to strip away weak signals
+  (Bien and Tibshirani 2014). Levels that keep their effect even under
+  heavy penalization carry signal; levels that vanish quickly are noise
+  or redundant. Levels only.
 
 - `"nmm"` (Nested Marginal Means):
 
@@ -200,7 +200,7 @@ summary(rf)
 
 tr <- cj_fit(Chosen_Immigrant ~ Gender + Education + LanguageSkills +
              Job + JobPlans, data = immig, method = "tree")
-plot(tr, type = "importance")
+plot(tr)
 
 # }
 ```

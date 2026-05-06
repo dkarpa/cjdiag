@@ -31,7 +31,8 @@ plot(
 - type:
 
   Plot type: `"mda"` (default), `"root"`, `"combined"`, `"cumulative"`,
-  or `"cumulative_pct"`
+  or `"cumulative_pct"` (forest only). For `nmm` objects, only `"mda"`
+  and `"cumulative"` are valid.
 
 - top_n:
 
@@ -74,6 +75,14 @@ plot(
 ## Value
 
 A ggplot object
+
+## See also
+
+Other plotting:
+[`plot.cjdiag_crt()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_crt.md),
+[`plot.cjdiag_forest()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_forest.md),
+[`plot.cjdiag_nmm()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_nmm.md),
+[`plot.cjdiag_tree()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_tree.md)
 
 ## Examples
 

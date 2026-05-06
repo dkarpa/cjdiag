@@ -1,6 +1,7 @@
 # Plot Nested Marginal Means Results
 
-Plot Nested Marginal Means Results
+Plots the cumulative percentage of choices explained by the top
+attribute levels in order of decisiveness.
 
 ## Usage
 
@@ -8,7 +9,6 @@ Plot Nested Marginal Means Results
 # S3 method for class 'cjdiag_nmm'
 plot(
   x,
-  type = "cumulative",
   top_n = NULL,
   base_size = NULL,
   colors = NULL,
@@ -27,10 +27,6 @@ plot(
 
   A `cjdiag_nmm` object from
   [`cj_fit()`](https://dkarpa.github.io/cjdiag/reference/cj_fit.md)
-
-- type:
-
-  Plot type: `"cumulative"` (default), `"decisiveness"`, or `"sample"`.
 
 - top_n:
 
@@ -74,6 +70,14 @@ plot(
 
 A ggplot object
 
+## See also
+
+Other plotting:
+[`plot.cjdiag_crt()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_crt.md),
+[`plot.cjdiag_forest()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_forest.md),
+[`plot.cjdiag_importance()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_importance.md),
+[`plot.cjdiag_tree()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_tree.md)
+
 ## Examples
 
 ``` r
@@ -86,8 +90,6 @@ df <- data.frame(
 )
 nmm <- cj_fit(y ~ a + b, data = df, method = "nmm", resp_id = "id", n_boot = 0)
 plot(nmm)
-
-plot(nmm, type = "decisiveness")
 
 # }
 ```

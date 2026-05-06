@@ -1,5 +1,49 @@
 # Changelog
 
+## cjdiag 0.2.1
+
+Focuses the package on a smaller set of well-supported plots and
+rewrites the README around the random-forest results table.
+
+### Breaking changes
+
+- Removed `plot(tree_obj, type = "importance")`. Decision trees are
+  rendered via `rpart.plot` only; the bar chart of rpart variable
+  importance was removed because the tree itself is the diagnostic and
+  the bar chart was misleading at level resolution.
+- Removed `plot(nmm_obj, type = "decisiveness")` and
+  `plot(nmm_obj, type = "sample")`. Nested marginal means now plots the
+  cumulative-explanation curve only. The underlying `decisiveness` and
+  `sample_history` columns are still available on the fit object.
+
+### Improvements
+
+- Cumulative and rank plots now place each label at its own rotated
+  x-axis tick, so collisions are impossible by construction and no
+  labels are dropped. Tick labels show the attribute on top in black and
+  the level below in dark grey, separated by a line break, via
+  [`ggtext::geom_richtext()`](https://wilkelab.org/ggtext/reference/geom_richtext.html)
+  (with a plain rotated-text fallback if ggtext is unavailable). The
+  bottom plot margin scales dynamically with the longest label.
+- Decision tree plots replace the dummy-name labels (e.g.
+  `JobPlansno.plans.to.look.for.work`) with `attribute: level` (e.g.
+  `JobPlans: no plans to look for work`) via a custom `split.fun` driven
+  by the fit’s `attr_map`. Works for any conjoint data without
+  per-dataset configuration.
+- README: random-forest example shows the full results table via
+  [`knitr::kable()`](https://rdrr.io/pkg/knitr/man/kable.html) with
+  column-by-column explanations of `mda`, `root_pct`, `class_0`, and
+  `class_1`. Importance plot switched from bar chart to the rank plot.
+- README and Getting Started vignette now include an Estimands Table
+  (estimand / `method =` / question / output / behavioural assumption /
+  when to use) so users can pick a method without reading the docs.
+- The single Introduction vignette is replaced by a Getting Started
+  overview (`cjdiag.Rmd`) plus one task-oriented vignette per method
+  (`forest`, `tree`, `nmm`, `marginal_r2`, `crt`).
+- Plot help pages now share an `@family plotting` block so the help
+  pages cross-link.
+- README: added ERC AGAPP funding acknowledgement.
+
 ## cjdiag 0.2.0
 
 Initial CRAN release.

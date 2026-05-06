@@ -82,6 +82,14 @@ plot(
 
 A ggplot object
 
+## See also
+
+Other plotting:
+[`plot.cjdiag_crt()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_crt.md),
+[`plot.cjdiag_importance()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_importance.md),
+[`plot.cjdiag_nmm()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_nmm.md),
+[`plot.cjdiag_tree()`](https://dkarpa.github.io/cjdiag/reference/plot.cjdiag_tree.md)
+
 ## Examples
 
 ``` r
@@ -97,8 +105,6 @@ plot(rf)
 plot(rf, palette = "colorblind", base_size = 14)
 
 plot(rf, type = "combined")
-
-plot(rf, group_by_attribute = TRUE)
 
 # }
 ```
