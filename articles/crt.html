@@ -83,7 +83,7 @@ It is the most computationally expensive method in cjdiag.</p>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">crt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"crt"</span>,</span>
-<span>              lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span>
+<span>              lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">500</span><span class="op">)</span>,</span>
 <span>              n_folds <span class="op">=</span> <span class="fl">3</span>, n_perm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">crt</span></span>
 <span><span class="co">#&gt; Conjoint CRT/HierNet Model </span></span>
@@ -102,19 +102,24 @@ It is the most computationally expensive method in cjdiag.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
 <span><span class="co">#&gt;     rank attribute            level                       mda max_lambda</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans             no plans to look for work 4.14          50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans             contract with employer    3.49          50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 PriorEntry           once w/o authorization    1.88          50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 Education            college degree            1.81          50</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans             no plans to look for work 4.14         150</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans             contract with employer    3.49         100</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 PriorEntry           once w/o authorization    1.88         100</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 Education            college degree            1.81         100</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 CountryofOrigin      Iraq                      1.77          50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Education            no formal                 1.57          50</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 Education            no formal                 1.57         100</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 LanguageSkills       used interpreter          1.28          50</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 ReasonforApplication escape persecution        1.27          50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 LanguageSkills       fluent English            1.27          50</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 LanguageSkills       fluent English            1.27         100</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 ReasonforApplication seek better job           0.910         20</span></span></code></pre></div>
 <p><code>max_lambda</code> is the largest λ at which the level still has
 a non-zero coefficient. <code>attended</code> is a boolean derived from
 <code>max_lambda &gt; 0</code>.</p>
+<p>Most signal-vs-noise separation happens between λ = 100 and λ = 500.
+Stopping the grid at λ = 50 (or lower) is a common mistake that makes
+nearly every level look “attended”: the penalty isn’t yet strong enough
+to eliminate the noise. Always extend the grid past λ = 200; the package
+default goes to 500.</p>
 </div>
 <div class="section level2">
 <h2 id="plot-lambda-survival">Plot lambda survival<a class="anchor" aria-label="anchor" href="#plot-lambda-survival"></a>

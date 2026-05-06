@@ -61,7 +61,7 @@
     
     
 <div class="section level2">
-<h2 id="what-cjdiag-does">What cjdiag does<a class="anchor" aria-label="anchor" href="#what-cjdiag-does"></a>
+<h2 id="what-cjdiag-does">1. What cjdiag does<a class="anchor" aria-label="anchor" href="#what-cjdiag-does"></a>
 </h2>
 <p>Standard conjoint analysis tools estimate Average Marginal Component
 Effects (AMCEs) — the causal effect of changing a single attribute
@@ -69,13 +69,59 @@ level. AMCEs tell you <em>what</em> respondents prefer, but not
 <em>how</em> they decide: which attribute levels they actually attend
 to, which ones they ignore, and in what order they process
 information.</p>
-<p><strong>cjdiag</strong> fills this gap. It works at the level of
+<p><strong>cjdiag</strong> fills that gap. It works at the level of
 individual <strong>attribute levels</strong> — not aggregated attributes
 — because the specific level (e.g., “no plans to look for work”, not
 just “Job Plans” as a whole) is what triggers respondent decisions.</p>
+<p>cjdiag is complementary to <code>cjoint</code>/<code>cregg</code>
+(which estimate AMCEs). The intended workflow is: run those for AMCEs
+first, then run cjdiag to diagnose how respondents actually made those
+choices.</p>
 </div>
 <div class="section level2">
-<h2 id="choosing-a-method">Choosing a method<a class="anchor" aria-label="anchor" href="#choosing-a-method"></a>
+<h2 id="quick-start">2. Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dkarpa.github.io/cjdiag/">cjdiag</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">immig</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">Chosen_Immigrant</span> <span class="op">~</span> <span class="va">Gender</span> <span class="op">+</span> <span class="va">Education</span> <span class="op">+</span> <span class="va">LanguageSkills</span> <span class="op">+</span></span>
+<span>  <span class="va">CountryofOrigin</span> <span class="op">+</span> <span class="va">Job</span> <span class="op">+</span> <span class="va">JobExperience</span> <span class="op">+</span> <span class="va">JobPlans</span> <span class="op">+</span></span>
+<span>  <span class="va">ReasonforApplication</span> <span class="op">+</span> <span class="va">PriorEntry</span></span>
+<span></span>
+<span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span>
+<span><span class="va">rf</span></span>
+<span><span class="co">#&gt; Conjoint Random Forest </span></span>
+<span><span class="co">#&gt; ====================== </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Resolution: levels</span></span>
+<span><span class="co">#&gt; Trees: 500</span></span>
+<span><span class="co">#&gt; OOB Error: 40.3%</span></span>
+<span><span class="co">#&gt; Observations: 2,000</span></span>
+<span><span class="co">#&gt; Attributes: 9</span></span>
+<span><span class="co">#&gt; Levels: 50</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Top 10 levels by MDA:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 7</span></span></span>
+<span><span class="co">#&gt;     rank attribute       level                      mda root_pct class_0 class_1</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans to look for wo… 13.5      15.4  12.3      7.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract with employer    8.18     11.2   3.70     6.98</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal                 7.87      7.4   8.04     2.38</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o authorization    7.42     10.4   6.87     3.66</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent English            6.16      8.2   2.71     6.00</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as tourist           4.83      2.4   1.61     5.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college degree            4.75      6.4   0.153    6.16</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used interpreter          4.66      5.6   4.91     1.37</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq                      4.15      4.6   3.53     2.15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor                   3.87      3     2.09     3.36</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"rank"</span>, top_n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cjdiag_files/figure-html/quick-plot-1.png" class="r-plt" alt="" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="choosing-a-method">3. Choosing a method<a class="anchor" aria-label="anchor" href="#choosing-a-method"></a>
 </h2>
 <table class="table">
 <colgroup>
@@ -137,38 +183,504 @@ just “Job Plans” as a whole) is what triggers respondent decisions.</p>
 </tr>
 </tbody>
 </table>
-<p>Each method has its own task-oriented vignette:</p>
-<ul>
-<li>
-<a href="forest.html">Random Forest</a>: default
-level-importance.</li>
-<li>
-<a href="tree.html">Decision Tree</a>: hierarchical decision
-structure.</li>
-<li>
-<a href="nmm.html">Nested Marginal Means</a>: decision
-<em>order</em>.</li>
-<li>
-<a href="marginal_r2.html">Marginal R-squared</a>: individual-level
-attendance.</li>
-<li>
-<a href="crt.html">CRT / HierNet</a>: regularization-robust level
-selection.</li>
-</ul>
+<p>Each method also has its own task-oriented vignette: <a href="forest.html">forest</a>, <a href="tree.html">tree</a>, <a href="nmm.html">nmm</a>, <a href="marginal_r2.html">marginal_r2</a>, <a href="crt.html">crt</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+<h2 id="cj_fit-full-reference">4. <code>cj_fit()</code> — full reference<a class="anchor" aria-label="anchor" href="#cj_fit-full-reference"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dkarpa.github.io/cjdiag/">cjdiag</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">immig</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">Chosen_Immigrant</span> <span class="op">~</span> <span class="va">Gender</span> <span class="op">+</span> <span class="va">Education</span> <span class="op">+</span> <span class="va">LanguageSkills</span> <span class="op">+</span></span>
-<span>  <span class="va">CountryofOrigin</span> <span class="op">+</span> <span class="va">Job</span> <span class="op">+</span> <span class="va">JobExperience</span> <span class="op">+</span> <span class="va">JobPlans</span> <span class="op">+</span></span>
-<span>  <span class="va">ReasonforApplication</span> <span class="op">+</span> <span class="va">PriorEntry</span></span>
-<span></span>
-<span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span>
-<span><span class="va">rf</span></span>
+<p><code><a href="../reference/cj_fit.html">cj_fit()</a></code> is the single entry point. It dispatches on
+<code>method</code> and returns an S3 object inheriting from
+<code>cjdiag_fit</code>.</p>
+<div class="section level3">
+<h3 id="signature">Signature<a class="anchor" aria-label="anchor" href="#signature"></a>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"forest"</span>, <span class="st">"tree"</span>, <span class="st">"crt"</span>, <span class="st">"nmm"</span>,</span>
+<span>                                  <span class="st">"marginal_r2"</span><span class="op">)</span>,</span>
+<span>       resolution <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"levels"</span>, <span class="st">"attributes"</span><span class="op">)</span>,</span>
+<span>       ntree <span class="op">=</span> <span class="fl">500L</span>, cp <span class="op">=</span> <span class="fl">0.005</span>,</span>
+<span>       lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span>, <span class="fl">30</span>,</span>
+<span>                       <span class="fl">40</span>, <span class="fl">50</span>, <span class="fl">75</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">400</span>, <span class="fl">500</span><span class="op">)</span>,</span>
+<span>       n_folds <span class="op">=</span> <span class="fl">5L</span>, n_perm <span class="op">=</span> <span class="fl">20L</span>, tol <span class="op">=</span> <span class="fl">1e-3</span>,</span>
+<span>       resp_id <span class="op">=</span> <span class="cn">NULL</span>, n_boot <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>       seed <span class="op">=</span> <span class="fl">42L</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="required-arguments">Required arguments<a class="anchor" aria-label="anchor" href="#required-arguments"></a>
+</h3>
+<ul>
+<li>
+<strong><code>formula</code></strong> — a formula
+<code>outcome ~ attr1 + attr2 + ...</code>. The outcome must be binary
+(0/1, logical, or a 2-level factor); predictors are treated as
+categorical (converted to factors internally).</li>
+<li>
+<strong><code>data</code></strong> — a data frame in long format,
+i.e. one row per profile.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="method-choice">Method choice<a class="anchor" aria-label="anchor" href="#method-choice"></a>
+</h3>
+<ul>
+<li>
+<strong><code>method</code></strong> — one of <code>"forest"</code>
+(default), <code>"tree"</code>, <code>"crt"</code>, <code>"nmm"</code>,
+<code>"marginal_r2"</code>. See §3.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="resolution">Resolution<a class="anchor" aria-label="anchor" href="#resolution"></a>
+</h3>
+<ul>
+<li>
+<strong><code>resolution</code></strong> — <code>"levels"</code>
+(default) or <code>"attributes"</code>.
+<ul>
+<li>
+<code>"levels"</code> dummy-codes every attribute level and treats
+each as a separate predictor. The recommended default — importance is a
+property of <em>specific levels</em>, not aggregated attributes.</li>
+<li>
+<code>"attributes"</code> passes the original factor columns to the
+model. Available for <code>forest</code> and <code>tree</code> only.
+CRT, NMM and <code>marginal_r2</code> require <code>"levels"</code> and
+will error otherwise.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="method-specific-arguments">Method-specific arguments<a class="anchor" aria-label="anchor" href="#method-specific-arguments"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th>Argument</th>
+<th>Methods</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>ntree</code></td>
+<td><code>forest</code></td>
+<td><code>500L</code></td>
+<td>Number of trees in the random forest.</td>
+</tr>
+<tr class="even">
+<td><code>cp</code></td>
+<td><code>tree</code></td>
+<td><code>0.005</code></td>
+<td>rpart complexity parameter. Smaller = deeper trees.</td>
+</tr>
+<tr class="odd">
+<td><code>lambda_grid</code></td>
+<td><code>crt</code></td>
+<td>19 values from 1 to 500</td>
+<td>L1 regularization path for hierNet. <strong>Must extend well past
+50</strong> — typical signal-vs-noise separation occurs in the 100–500
+range.</td>
+</tr>
+<tr class="even">
+<td><code>n_folds</code></td>
+<td><code>crt</code></td>
+<td><code>5L</code></td>
+<td>Cross-validation folds.</td>
+</tr>
+<tr class="odd">
+<td><code>n_perm</code></td>
+<td><code>crt</code></td>
+<td><code>20L</code></td>
+<td>Permutation rounds for permutation importance.</td>
+</tr>
+<tr class="even">
+<td><code>tol</code></td>
+<td><code>crt</code></td>
+<td><code>1e-3</code></td>
+<td>hierNet convergence tolerance.</td>
+</tr>
+<tr class="odd">
+<td><code>resp_id</code></td>
+<td>
+<code>nmm</code>, <code>marginal_r2</code>
+</td>
+<td><code>NULL</code></td>
+<td>
+<strong>Required.</strong> Name of the respondent ID column.</td>
+</tr>
+<tr class="even">
+<td><code>n_boot</code></td>
+<td><code>nmm</code></td>
+<td><code>0L</code></td>
+<td>Bootstrap iterations for NMM CIs. <code>0</code> disables.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
+</h3>
+<ul>
+<li>
+<strong><code>seed</code></strong> — random seed; default
+<code>42L</code>. Set explicitly for any run you want to reproduce.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="pass-through">Pass-through<a class="anchor" aria-label="anchor" href="#pass-through"></a>
+</h3>
+<ul>
+<li>
+<strong><code>...</code></strong> — additional arguments forwarded
+to <code><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html" class="external-link">randomForest::randomForest()</a></code>,
+<code><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart::rpart()</a></code>, or <code><a href="https://rdrr.io/pkg/hierNet/man/hierNet.html" class="external-link">hierNet::hierNet()</a></code>
+depending on <code>method</code>.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="errors-and-validation">Errors and validation<a class="anchor" aria-label="anchor" href="#errors-and-validation"></a>
+</h3>
+<p><code><a href="../reference/cj_fit.html">cj_fit()</a></code> errors with a structured <code>cli</code>
+message in these cases:</p>
+<ul>
+<li>
+<code>data</code> is not a data frame, or has zero rows.</li>
+<li>
+<code>method = "crt"</code> or <code>"nmm"</code> is combined with
+<code>resolution = "attributes"</code>.</li>
+<li>
+<code>method = "nmm"</code> or <code>"marginal_r2"</code> is called
+without <code>resp_id</code>.</li>
+<li>The formula’s outcome is not binary.</li>
+<li>An attribute named in the formula is missing from
+<code>data</code>.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="return-value">Return value<a class="anchor" aria-label="anchor" href="#return-value"></a>
+</h3>
+<p>An S3 object. The exact subclass depends on <code>method</code>:
+<code>cjdiag_forest</code>, <code>cjdiag_tree</code>,
+<code>cjdiag_crt</code>, <code>cjdiag_nmm</code>,
+<code>cjdiag_marginal_r2</code>. All inherit from
+<code>cjdiag_fit</code> and support <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>,
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, and
+<code><a href="../reference/importance.html">importance()</a></code>.</p>
+<p>The object is a list. Common slots: <code>model</code> (the
+underlying fit), <code>method</code>, <code>resolution</code>,
+<code>results</code> (the importance tibble), <code>formula</code>,
+<code>outcome</code>, <code>attributes</code>, <code>n_obs</code>,
+<code>n_levels</code>, <code>attr_map</code>, <code>seed</code>.
+Method-specific slots (<code>oob_error</code>, <code>ntree</code> on
+forest; <code>root_split</code>, <code>depth</code>,
+<code>n_terminal</code>, <code>cp</code> on tree;
+<code>optimal_lambda</code>, <code>lambda_1se</code>,
+<code>accuracy</code> on crt; <code>n_boot</code> on nmm;
+<code>r2_matrix</code> on marginal_r2) round it out.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="importance-extracting-the-results-table">5. <code>importance()</code> — extracting the results table<a class="anchor" aria-label="anchor" href="#importance-extracting-the-results-table"></a>
+</h2>
+<p><code><a href="../reference/importance.html">importance()</a></code> is the S3 generic that returns a
+<code>cjdiag_importance</code> object — a tidy tibble of per-level
+importance metrics plus a few summary slots. Methods are dispatched on
+the fit’s class.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">imp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/importance.html">importance</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span></span>
+<span><span class="va">imp</span></span>
+<span><span class="co">#&gt; Conjoint Importance Metrics </span></span>
+<span><span class="co">#&gt; =========================== </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Resolution: levels</span></span>
+<span><span class="co">#&gt; Method: Random Forest (500 trees)</span></span>
+<span><span class="co">#&gt; OOB Error: 40.3%</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Level Importance (top 10 ):</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 9</span></span></span>
+<span><span class="co">#&gt;     rank attribute       level       mda   mdg root_pct class_0 class_1 var_name</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans… 13.5   28.2     15.4  12.3      7.25 JobPlan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract…  8.18  23.0     11.2   3.70     6.98 JobPlan…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal  7.87  18.7      7.4   8.04     2.38 Educati…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o…  7.42  22.9     10.4   6.87     3.66 PriorEn…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent E…  6.16  22.3      8.2   2.71     6.00 Languag…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as …  4.83  20.3      2.4   1.61     5.25 PriorEn…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college …  4.75  18.9      6.4   0.153    6.16 Educati…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used int…  4.66  20.2      5.6   4.91     1.37 Languag…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq       4.15  17.1      4.6   3.53     2.15 Country…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor    3.87  18.0      3     2.09     3.36 Jobjani…</span></span></code></pre></div>
+<p>Coerce to a data frame for downstream work:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">imp</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   rank      attribute                     level       mda      mdg root_pct</span></span>
+<span><span class="co">#&gt; 1    1       JobPlans no plans to look for work 13.478845 28.16033     15.4</span></span>
+<span><span class="co">#&gt; 2    2       JobPlans    contract with employer  8.177931 22.97810     11.2</span></span>
+<span><span class="co">#&gt; 3    3      Education                 no formal  7.872982 18.74837      7.4</span></span>
+<span><span class="co">#&gt; 4    4     PriorEntry    once w/o authorization  7.416027 22.91502     10.4</span></span>
+<span><span class="co">#&gt; 5    5 LanguageSkills            fluent English  6.157514 22.27571      8.2</span></span>
+<span><span class="co">#&gt; 6    6     PriorEntry           once as tourist  4.827218 20.27154      2.4</span></span>
+<span><span class="co">#&gt;     class_0  class_1                          var_name</span></span>
+<span><span class="co">#&gt; 1 12.333363 7.250195 JobPlansno.plans.to.look.for.work</span></span>
+<span><span class="co">#&gt; 2  3.697133 6.978693    JobPlanscontract.with.employer</span></span>
+<span><span class="co">#&gt; 3  8.035186 2.376082                Educationno.formal</span></span>
+<span><span class="co">#&gt; 4  6.870653 3.664381  PriorEntryonce.w.o.authorization</span></span>
+<span><span class="co">#&gt; 5  2.712916 6.002354      LanguageSkillsfluent.English</span></span>
+<span><span class="co">#&gt; 6  1.607777 5.250203         PriorEntryonce.as.tourist</span></span></code></pre></div>
+<p>Per-method slots on the returned object:</p>
+<ul>
+<li>
+<strong>forest</strong>: <code>results</code>,
+<code>root_dist</code>, <code>oob_error</code>, <code>ntree</code>.</li>
+<li>
+<strong>tree</strong>: <code>results</code>,
+<code>root_split</code>, <code>depth</code>.</li>
+<li>
+<strong>crt</strong>: <code>results</code>,
+<code>optimal_lambda</code>, <code>lambda_1se</code>,
+<code>n_attended</code>, <code>accuracy</code>.</li>
+<li>
+<strong>nmm</strong>: <code>results</code>,
+<code>n_boot</code>.</li>
+<li>
+<strong>marginal_r2</strong>: <code>results</code>,
+<code>n_resp</code>, <code>r2_matrix</code>.</li>
+</ul>
+<p><code><a href="../reference/importance.html">importance()</a></code> makes no copies of the underlying model —
+it is a thin projection of <code>fit$results</code>. For analyses that
+need the model itself, use <code>fit$model</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="plot-every-plot-type">6. <code>plot()</code> — every plot type<a class="anchor" aria-label="anchor" href="#plot-every-plot-type"></a>
+</h2>
+<p>All plot methods return <code>ggplot</code> objects (except the tree,
+which renders via <code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html" class="external-link">rpart.plot::rpart.plot()</a></code> and returns
+invisibly). All accept the customization parameters in §8.</p>
+<div class="section level3">
+<h3 id="plot-cjdiag_forest">6.1 <code>plot.cjdiag_forest()</code><a class="anchor" aria-label="anchor" href="#plot-cjdiag_forest"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">forest_obj</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"importance"</span>, <span class="st">"combined"</span>, <span class="st">"rank"</span><span class="op">)</span>,</span>
+<span>     top_n <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li>
+<code>type = "importance"</code> (default) — vertical bar chart of
+MDA per level, sorted descending.</li>
+<li>
+<code>type = "combined"</code> — dual-axis plot showing MDA bars +
+root-split rate as overlaid points/line. Useful for comparing the two
+importance signals at a glance.</li>
+<li>
+<code>type = "rank"</code> — line plot of MDA against rank, with
+rotated x-tick labels (attribute black, level dark grey). The default
+for the README and the plot type used in §11.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="plot-cjdiag_tree">6.2 <code>plot.cjdiag_tree()</code><a class="anchor" aria-label="anchor" href="#plot-cjdiag_tree"></a>
+</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">tree_obj</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<p>Renders the decision tree via <code><a href="https://rdrr.io/pkg/rpart.plot/man/rpart.plot.html" class="external-link">rpart.plot::rpart.plot()</a></code>.
+Splits are relabelled <code>attribute: level</code>
+(e.g. <code>JobPlans: no plans to look for work</code>) via a custom
+<code>split.fun</code>. Pass any <code>rpart.plot</code> argument
+through <code>...</code> to override defaults (<code>type = 4</code>,
+<code>extra = 101</code>, <code>under = TRUE</code>,
+<code>fallen.leaves = TRUE</code>, <code>box.palette = "BuOr"</code>,
+<code>cex = 0.9</code>).</p>
+</div>
+<div class="section level3">
+<h3 id="plot-cjdiag_crt">6.3 <code>plot.cjdiag_crt()</code><a class="anchor" aria-label="anchor" href="#plot-cjdiag_crt"></a>
+</h3>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt_obj</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"robustness"</span>, <span class="st">"survival"</span>, <span class="st">"mda"</span>, <span class="st">"cv"</span><span class="op">)</span>,</span>
+<span>     top_n <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li>
+<code>type = "robustness"</code> (default) — bar chart of
+<code>max_lambda</code> per level (the largest λ where the level
+survives).</li>
+<li>
+<code>type = "survival"</code> — λ-survival curve: which levels keep
+a non-zero coefficient as λ rises.</li>
+<li>
+<code>type = "mda"</code> — permutation importance from the CRT
+fit.</li>
+<li>
+<code>type = "cv"</code> — cross-validated accuracy across the
+lambda grid.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="plot-cjdiag_nmm">6.4 <code>plot.cjdiag_nmm()</code><a class="anchor" aria-label="anchor" href="#plot-cjdiag_nmm"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">nmm_obj</span>, top_n <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<p>Cumulative-explanation curve only — the single supported NMM plot
+since 0.2.1. Earlier <code>type = "decisiveness"</code> and
+<code>type = "sample"</code> plots were removed (the columns remain on
+the fit object).</p>
+</div>
+<div class="section level3">
+<h3 id="plot-cjdiag_importance-generic">6.5 <code>plot.cjdiag_importance()</code> (generic)<a class="anchor" aria-label="anchor" href="#plot-cjdiag_importance-generic"></a>
+</h3>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">imp_obj</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mda"</span>, <span class="st">"root"</span>, <span class="st">"combined"</span>, <span class="st">"cumulative"</span>,</span>
+<span>                       <span class="st">"cumulative_pct"</span><span class="op">)</span>,</span>
+<span>     top_n <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<p>Plots from a <code>cjdiag_importance</code> object directly. Valid
+types depend on the original method:</p>
+<table class="table">
+<thead><tr class="header">
+<th>Original method</th>
+<th>Valid types</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>forest</td>
+<td>
+<code>mda</code>, <code>root</code>, <code>combined</code>,
+<code>cumulative</code>, <code>cumulative_pct</code>
+</td>
+</tr>
+<tr class="even">
+<td>crt</td>
+<td><code>mda</code></td>
+</tr>
+<tr class="odd">
+<td>tree</td>
+<td><code>mda</code></td>
+</tr>
+<tr class="even">
+<td>nmm</td>
+<td>
+<code>mda</code>, <code>cumulative</code>
+</td>
+</tr>
+<tr class="odd">
+<td>marginal_r2</td>
+<td><code>mda</code></td>
+</tr>
+</tbody>
+</table>
+<p>For most users, <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> directly on the
+<code><a href="../reference/cj_fit.html">cj_fit()</a></code> output is simpler than going through
+<code><a href="../reference/importance.html">importance()</a></code>.</p>
+</div>
+<div class="section level3">
+<h3 id="common-plot-arguments">6.6 Common plot arguments<a class="anchor" aria-label="anchor" href="#common-plot-arguments"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Argument</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>top_n</code></td>
+<td>integer or <code>NULL</code>
+</td>
+<td>Number of levels to display. Default <code>25L</code>;
+<code>NULL</code> = all levels.</td>
+</tr>
+<tr class="even">
+<td><code>base_size</code></td>
+<td>numeric</td>
+<td>Base font size. Falls back to global option, then
+<code>12</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>colors</code></td>
+<td>named char vector</td>
+<td>Override specific palette colors
+(e.g. <code>c(primary = "#000")</code>).</td>
+</tr>
+<tr class="even">
+<td><code>palette</code></td>
+<td>char</td>
+<td>
+<code>"default"</code>, <code>"colorblind"</code> (Okabe-Ito), or
+<code>"grey"</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>theme</code></td>
+<td>
+<code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme()</a></code> object</td>
+<td>Replace the default theme entirely.</td>
+</tr>
+<tr class="even">
+<td><code>label_wrap</code></td>
+<td>integer</td>
+<td>Character width for label wrapping. Default <code>35L</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>attribute.names</code></td>
+<td>named char vector</td>
+<td>Per-call attribute renames
+(e.g. <code>c(JobPlans = "Plans for Employment")</code>).</td>
+</tr>
+<tr class="even">
+<td><code>level.names</code></td>
+<td>named list</td>
+<td>Per-call level renames. See §8.2.</td>
+</tr>
+<tr class="odd">
+<td><code>...</code></td>
+<td>—</td>
+<td>Forwarded to the underlying geom or <code>rpart.plot</code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section level2">
+<h2 id="print-and-summary">7. <code>print()</code> and <code>summary()</code><a class="anchor" aria-label="anchor" href="#print-and-summary"></a>
+</h2>
+<p>Every fit and importance object has a <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method
+tuned to the method:</p>
+<ul>
+<li>
+<strong><code>print.cjdiag_forest()</code></strong> — header
+(resolution, ntree, OOB error, observations, attributes/levels) and the
+top <code>n</code> rows of the results table, including
+<code>mda</code>, <code>root_pct</code>, <code>class_0</code>,
+<code>class_1</code>.</li>
+<li>
+<strong><code>print.cjdiag_tree()</code></strong> — header (cp, root
+split, depth, terminal nodes) and the top <code>n</code> rows by
+importance.</li>
+<li>
+<strong><code>print.cjdiag_crt()</code></strong> — header (optimal
+λ, λ-1se, accuracy, attended count) and the top <code>n</code> rows by
+<code>max_lambda</code>.</li>
+<li>
+<strong><code>print.cjdiag_nmm()</code></strong> — header (total
+pairs, decisive picks) and the top <code>n</code> levels by
+decisiveness.</li>
+<li>
+<strong><code>print.cjdiag_marginal_r2()</code></strong> —
+per-attribute mean/median R² and share of respondents with R² = 0.</li>
+<li>
+<strong><code>print.cjdiag_importance()</code></strong> — same
+shape, dispatched on the importance object.</li>
+</ul>
+<p>All print methods accept an <code>n</code> argument:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">rf</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Conjoint Random Forest </span></span>
 <span><span class="co">#&gt; ====================== </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -179,41 +691,368 @@ selection.</li>
 <span><span class="co">#&gt; Attributes: 9</span></span>
 <span><span class="co">#&gt; Levels: 50</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Top 10 levels by MDA:</span></span>
+<span><span class="co">#&gt; Top 5 levels by MDA:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 7</span></span></span>
-<span><span class="co">#&gt;     rank attribute       level                      mda root_pct class_0 class_1</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans to look for wo… 13.5      15.4  12.3      7.25</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract with employer    8.18     11.2   3.70     6.98</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal                 7.87      7.4   8.04     2.38</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o authorization    7.42     10.4   6.87     3.66</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent English            6.16      8.2   2.71     6.00</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as tourist           4.83      2.4   1.61     5.25</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college degree            4.75      6.4   0.153    6.16</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used interpreter          4.66      5.6   4.91     1.37</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq                      4.15      4.6   3.53     2.15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor                   3.87      3     2.09     3.36</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"rank"</span>, top_n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
-<p><img src="cjdiag_files/figure-html/quick-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
+<span><span class="co">#&gt;    rank attribute      level                       mda root_pct class_0 class_1</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 JobPlans       no plans to look for work 13.5      15.4   12.3     7.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 JobPlans       contract with employer     8.18     11.2    3.70    6.98</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 Education      no formal                  7.87      7.4    8.04    2.38</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 PriorEntry     once w/o authorization     7.42     10.4    6.87    3.66</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5 LanguageSkills fluent English             6.16      8.2    2.71    6.00</span></span></code></pre></div>
+<p>Without <code>n</code>, <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> falls back to
+<code>get_cjdiag_options("print_n")</code> (default
+<code>10L</code>).</p>
+<p><code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> methods exist for <code>cjdiag_forest</code>,
+<code>cjdiag_tree</code>, <code>cjdiag_crt</code>,
+<code>cjdiag_nmm</code>, and <code>cjdiag_importance</code>. They return
+a list of summary statistics rather than printing — useful when you want
+the numbers without the formatted output.</p>
 </div>
 <div class="section level2">
-<h2 id="plot-customization">Plot customization<a class="anchor" aria-label="anchor" href="#plot-customization"></a>
+<h2 id="customization">8. Customization<a class="anchor" aria-label="anchor" href="#customization"></a>
 </h2>
-<p>All plot methods return ggplot2 objects and accept customization:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="theme">8.1 Theme<a class="anchor" aria-label="anchor" href="#theme"></a>
+</h3>
+<p><code><a href="../reference/theme_cjdiag.html">theme_cjdiag()</a></code> is the default ggplot2 theme used
+internally:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/theme_cjdiag.html">theme_cjdiag</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">12</span>, base_family <span class="op">=</span> <span class="st">""</span>,</span>
+<span>             grid_y <span class="op">=</span> <span class="cn">FALSE</span>, grid_x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>Built on <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal()</a></code> with no minor gridlines,
+optional major gridlines on x or y axes, and the legend at the top.</p>
+</div>
+<div class="section level3">
+<h3 id="per-call-overrides">8.2 Per-call overrides<a class="anchor" aria-label="anchor" href="#per-call-overrides"></a>
+</h3>
+<p>Every plot method accepts the customization arguments from §6.6.
+Examples:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>,</span>
 <span>     palette <span class="op">=</span> <span class="st">"colorblind"</span>,</span>
 <span>     attribute.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>LanguageSkills <span class="op">=</span> <span class="st">"English Proficiency"</span>,</span>
 <span>                         JobPlans <span class="op">=</span> <span class="st">"Plans for Employment"</span><span class="op">)</span>,</span>
 <span>     top_n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cjdiag_files/figure-html/custom-plot-1.png" class="r-plt" alt="" width="100%"></p>
-<p>Three palettes: <code>"default"</code>, <code>"colorblind"</code>
-(Okabe-Ito), <code>"grey"</code>.</p>
-<p>Set global defaults with <code><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme()</a></code> and
-<code><a href="../reference/set_cjdiag_labels.html">set_cjdiag_labels()</a></code> so all plots use the same settings
-without repeating arguments.</p>
+<p>Renaming levels uses a list keyed by attribute:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>,</span>
+<span>     level.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>       JobPlans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no plans to look for work"</span> <span class="op">=</span> <span class="st">"no plans"</span>,</span>
+<span>                    <span class="st">"contract with employer"</span> <span class="op">=</span> <span class="st">"has contract"</span><span class="op">)</span></span>
+<span>     <span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="global-options">8.3 Global options<a class="anchor" aria-label="anchor" href="#global-options"></a>
+</h3>
+<p>For the same overrides across many plots in a session or script, set
+them once globally:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span>,</span>
+<span>                 palette <span class="op">=</span> <span class="st">"colorblind"</span>,</span>
+<span>                 print_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/set_cjdiag_labels.html">set_cjdiag_labels</a></span><span class="op">(</span></span>
+<span>  attribute.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>LanguageSkills <span class="op">=</span> <span class="st">"English Proficiency"</span><span class="op">)</span>,</span>
+<span>  level.names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    JobPlans <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no plans to look for work"</span> <span class="op">=</span> <span class="st">"no plans"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme()</a></code> arguments:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Argument</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>base_size</code></td>
+<td><code>12</code></td>
+<td>Font size.</td>
+</tr>
+<tr class="even">
+<td><code>palette</code></td>
+<td><code>"default"</code></td>
+<td>One of <code>"default"</code>, <code>"colorblind"</code>,
+<code>"grey"</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>font_family</code></td>
+<td><code>""</code></td>
+<td>Base font family.</td>
+</tr>
+<tr class="even">
+<td><code>label_wrap</code></td>
+<td><code>35L</code></td>
+<td>Label-wrap character width.</td>
+</tr>
+<tr class="odd">
+<td><code>theme</code></td>
+<td><code>NULL</code></td>
+<td>Full ggplot2 theme override.</td>
+</tr>
+<tr class="even">
+<td><code>print_n</code></td>
+<td><code>10L</code></td>
+<td>Default <code>n</code> for <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> methods.</td>
+</tr>
+</tbody>
+</table>
+<p><code><a href="../reference/set_cjdiag_labels.html">set_cjdiag_labels()</a></code> arguments:</p>
+<table class="table">
+<thead><tr class="header">
+<th>Argument</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>attribute.names</code></td>
+<td>Named char vector mapping original to display.</td>
+</tr>
+<tr class="even">
+<td><code>level.names</code></td>
+<td>Named list of per-attribute level remaps.</td>
+</tr>
+<tr class="odd">
+<td><code>reset</code></td>
+<td>If <code>TRUE</code>, clears the dictionary.</td>
+</tr>
+</tbody>
+</table>
+<p>Both setters return the previous options invisibly, so you can save
+and restore around a block:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_cjdiag_theme.html">set_cjdiag_theme</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">set_cjdiag_theme</span>, <span class="va">old</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Inspect current options:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_cjdiag_options.html">get_cjdiag_options</a></span><span class="op">(</span><span class="st">"palette"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "default"</span></span></code></pre></div>
+<p><code><a href="../reference/get_cjdiag_options.html">get_cjdiag_options()</a></code> with no argument returns the full
+options list.</p>
+</div>
+<div class="section level3">
+<h3 id="palettes">8.4 Palettes<a class="anchor" aria-label="anchor" href="#palettes"></a>
+</h3>
+<p><code><a href="../reference/cjdiag_palette.html">cjdiag_palette()</a></code> returns the named character vector for
+a palette:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cjdiag_palette.html">cjdiag_palette</a></span><span class="op">(</span><span class="st">"colorblind"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   primary secondary  tertiary </span></span>
+<span><span class="co">#&gt; "#0072B2" "#D55E00" "#999999"</span></span></code></pre></div>
+<p>The <code>n</code> argument is reserved for future use; currently
+each palette returns three colors (<code>primary</code>,
+<code>secondary</code>, <code>tertiary</code>).</p>
+<p>The three palettes:</p>
+<ul>
+<li>
+<code>"default"</code> — blue / red / light-grey.</li>
+<li>
+<code>"colorblind"</code> — Okabe-Ito blue / vermillion / grey.</li>
+<li>
+<code>"grey"</code> — dark / mid / light grey, for grayscale
+print.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="resolution-priority">8.5 Resolution priority<a class="anchor" aria-label="anchor" href="#resolution-priority"></a>
+</h3>
+<p>For every plot argument, the priority is:</p>
+<pre><code>explicit function arg  &gt;  global option (set_cjdiag_*)  &gt;  hardcoded default</code></pre>
+<p>This lets you set sensible defaults once and override per-plot when
+needed.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="augment_profile_order-utility-for-crt">9. <code>augment_profile_order()</code> — utility for CRT<a class="anchor" aria-label="anchor" href="#augment_profile_order-utility-for-crt"></a>
+</h2>
+<p>CRT requires the <em>profile order</em> assumption (the choice
+probability must be invariant to which side a profile is shown on). Most
+real-world conjoint data don’t satisfy this exactly; the standard fix is
+to flip left/right and invert the outcome, doubling the dataset.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/augment_profile_order.html">augment_profile_order</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">outcome</span>,</span>
+<span>                      left <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left_attr1"</span>, <span class="st">"left_attr2"</span>, <span class="va">...</span><span class="op">)</span>,</span>
+<span>                      right <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"right_attr1"</span>, <span class="st">"right_attr2"</span>, <span class="va">...</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li>
+<code>data</code> — a data frame.</li>
+<li>
+<code>outcome</code> — name of the binary outcome column (0/1).</li>
+<li>
+<code>left</code>, <code>right</code> — vectors of attribute column
+names, same length. Pairs must align: <code>left[i]</code> is swapped
+with <code>right[i]</code>.</li>
+</ul>
+<p>Returns a data frame with <code>2 × nrow(data)</code> rows: the
+original data followed by the swapped/inverted copy. Apply this
+<strong>before</strong> <code>cj_fit(..., method = "crt")</code> if your
+data isn’t already symmetric.</p>
+<p>This is not needed for <code>forest</code>, <code>tree</code>,
+<code>nmm</code>, or <code>marginal_r2</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="datasets">10. Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a>
+</h2>
+<p><code>data(immig)</code> — the bundled Hainmueller and Hopkins (2015)
+immigration conjoint. 13,960 profile evaluations across 1,396
+respondents, 9 attributes:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">immig</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    2000 obs. of  13 variables:</span></span>
+<span><span class="co">#&gt;  $ CaseID              : int  4 4 4 4 4 4 4 4 4 4 ...</span></span>
+<span><span class="co">#&gt;  $ contest_no          : int  1 1 2 2 3 3 4 4 5 5 ...</span></span>
+<span><span class="co">#&gt;  $ profile             : num  1 2 1 2 1 2 1 2 1 2 ...</span></span>
+<span><span class="co">#&gt;  $ Gender              : Factor w/ 2 levels "female","male": 2 1 1 1 1 2 2 1 1 2 ...</span></span>
+<span><span class="co">#&gt;  $ Education           : Factor w/ 7 levels "4th grade","8th grade",..: 5 6 4 1 5 3 7 2 7 6 ...</span></span>
+<span><span class="co">#&gt;  $ LanguageSkills      : Factor w/ 4 levels "broken English",..: 3 4 2 2 1 2 4 2 4 4 ...</span></span>
+<span><span class="co">#&gt;  $ CountryofOrigin     : Factor w/ 10 levels "China","France",..: 5 2 10 3 7 10 5 8 7 6 ...</span></span>
+<span><span class="co">#&gt;  $ Job                 : Factor w/ 11 levels "child care provider",..: 8 1 6 3 8 1 10 3 10 8 ...</span></span>
+<span><span class="co">#&gt;  $ JobExperience       : Factor w/ 4 levels "1-2 years","3-5 years",..: 3 2 2 3 3 4 3 1 2 3 ...</span></span>
+<span><span class="co">#&gt;  $ JobPlans            : Factor w/ 4 levels "contract with employer",..: 1 2 1 2 2 1 4 2 2 3 ...</span></span>
+<span><span class="co">#&gt;  $ ReasonforApplication: Factor w/ 3 levels "escape persecution",..: 3 3 1 2 3 3 1 3 3 3 ...</span></span>
+<span><span class="co">#&gt;  $ PriorEntry          : Factor w/ 5 levels "many times as tourist",..: 3 4 3 2 4 2 2 3 3 3 ...</span></span>
+<span><span class="co">#&gt;  $ Chosen_Immigrant    : num  1 0 0 1 1 0 0 1 1 0 ...</span></span></code></pre></div>
+<p>The outcome <code>Chosen_Immigrant</code> is binary (0 = rejected, 1
+= chosen). <code>CaseID</code> is the respondent identifier (use as
+<code>resp_id</code> for <code>nmm</code> and
+<code>marginal_r2</code>).</p>
+</div>
+<div class="section level2">
+<h2 id="worked-workflow">11. Worked workflow<a class="anchor" aria-label="anchor" href="#worked-workflow"></a>
+</h2>
+<p>A representative end-to-end session combining several methods:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 1. Importance ranking - always start here.</span></span>
+<span><span class="va">rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"forest"</span><span class="op">)</span></span>
+<span><span class="va">top_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/importance.html">importance</a></span><span class="op">(</span><span class="va">rf</span><span class="op">)</span><span class="op">$</span><span class="va">results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">top_levels</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rank"</span>, <span class="st">"attribute"</span>, <span class="st">"level"</span>, <span class="st">"mda"</span>, <span class="st">"root_pct"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
+<span><span class="co">#&gt;     rank attribute       level                       mda root_pct</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1 JobPlans        no plans to look for work 13.5      15.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2 JobPlans        contract with employer     8.18     11.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3 Education       no formal                  7.87      7.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4 PriorEntry      once w/o authorization     7.42     10.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5 LanguageSkills  fluent English             6.16      8.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6 PriorEntry      once as tourist            4.83      2.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7 Education       college degree             4.75      6.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8 LanguageSkills  used interpreter           4.66      5.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9 CountryofOrigin Iraq                       4.15      4.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10 Job             janitor                    3.87      3</span></span>
+<span></span>
+<span><span class="co"># 2. Decision structure - does a single attribute gate the rest?</span></span>
+<span><span class="va">tr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"tree"</span><span class="op">)</span></span>
+<span><span class="va">tr</span><span class="op">$</span><span class="va">root_split</span>   <span class="co"># the gatekeeper, if any</span></span>
+<span><span class="co">#&gt; [1] "JobPlansno.plans.to.look.for.work"</span></span>
+<span></span>
+<span><span class="co"># 3. Decision order - sequential elimination view.</span></span>
+<span><span class="va">nmm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"nmm"</span>,</span>
+<span>              resp_id <span class="op">=</span> <span class="st">"CaseID"</span>, n_boot <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 4. Per-respondent attendance - heterogeneity diagnostic.</span></span>
+<span><span class="va">mr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cj_fit.html">cj_fit</a></span><span class="op">(</span><span class="va">f</span>, data <span class="op">=</span> <span class="va">immig</span>, method <span class="op">=</span> <span class="st">"marginal_r2"</span>,</span>
+<span>              resp_id <span class="op">=</span> <span class="st">"CaseID"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span>
+<span><span class="co">#&gt; Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">rf</span>, type <span class="op">=</span> <span class="st">"rank"</span>, top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
+<p><img src="cjdiag_files/figure-html/workflow-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<p>Each method asks a different question. They are complementary, not
+competing.</p>
+</div>
+<div class="section level2">
+<h2 id="reproducibility-checklist">12. Reproducibility checklist<a class="anchor" aria-label="anchor" href="#reproducibility-checklist"></a>
+</h2>
+<ul>
+<li>Set <code>seed</code> explicitly (default is <code>42L</code>, but
+make this explicit in any saved analysis script).</li>
+<li>For <code>forest</code>, <code>ntree = 500L</code> is plenty for
+stable rankings; <code>ntree = 1000L</code> is more conservative.</li>
+<li>For <code>crt</code>, the lambda grid must extend well beyond 50 —
+the default goes to 500 and most signal-vs-noise separation happens
+between 100 and 500. Truncating at λ = 50 underestimates how many levels
+survive penalization. <code>n_perm = 20L</code> is the published
+default; raise to <code>100--500</code> if you intend to publish
+individual lambda-survival numbers.</li>
+<li>For <code>nmm</code>, <code>n_boot = 0</code> returns point
+estimates only; set to <code>200</code> (or <code>1000</code>) to attach
+bootstrap CIs to the decisiveness ranks.</li>
+<li>All <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> arguments are
+deterministic given the fit; only <code><a href="../reference/cj_fit.html">cj_fit()</a></code> itself uses
+randomness.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="citation">13. Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"cjdiag"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; To cite package 'cjdiag' in publications use:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Karpa D (2026). _cjdiag: Diagnostic Tools for Conjoint Survey</span></span>
+<span><span class="co">#&gt;   Experiments_. R package version 0.2.1,</span></span>
+<span><span class="co">#&gt;   &lt;https://github.com/dkarpa/cjdiag&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Manual{,</span></span>
+<span><span class="co">#&gt;     title = {cjdiag: Diagnostic Tools for Conjoint Survey Experiments},</span></span>
+<span><span class="co">#&gt;     author = {David Karpa},</span></span>
+<span><span class="co">#&gt;     year = {2026},</span></span>
+<span><span class="co">#&gt;     note = {R package version 0.2.1},</span></span>
+<span><span class="co">#&gt;     url = {https://github.com/dkarpa/cjdiag},</span></span>
+<span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

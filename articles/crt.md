@@ -26,7 +26,7 @@ f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
 ``` r
 
 crt <- cj_fit(f, data = immig, method = "crt",
-              lambda_grid = c(5, 10, 20, 50),
+              lambda_grid = c(5, 10, 20, 50, 100, 150, 200, 300, 500),
               n_folds = 3, n_perm = 5)
 crt
 #> Conjoint CRT/HierNet Model 
@@ -45,20 +45,26 @@ crt
 #> # A tibble: 10 × 5
 #>     rank attribute            level                       mda max_lambda
 #>    <int> <chr>                <chr>                     <dbl>      <dbl>
-#>  1     1 JobPlans             no plans to look for work 4.14          50
-#>  2     2 JobPlans             contract with employer    3.49          50
-#>  3     3 PriorEntry           once w/o authorization    1.88          50
-#>  4     4 Education            college degree            1.81          50
+#>  1     1 JobPlans             no plans to look for work 4.14         150
+#>  2     2 JobPlans             contract with employer    3.49         100
+#>  3     3 PriorEntry           once w/o authorization    1.88         100
+#>  4     4 Education            college degree            1.81         100
 #>  5     5 CountryofOrigin      Iraq                      1.77          50
-#>  6     6 Education            no formal                 1.57          50
+#>  6     6 Education            no formal                 1.57         100
 #>  7     7 LanguageSkills       used interpreter          1.28          50
 #>  8     8 ReasonforApplication escape persecution        1.27          50
-#>  9     9 LanguageSkills       fluent English            1.27          50
+#>  9     9 LanguageSkills       fluent English            1.27         100
 #> 10    10 ReasonforApplication seek better job           0.910         20
 ```
 
 `max_lambda` is the largest λ at which the level still has a non-zero
 coefficient. `attended` is a boolean derived from `max_lambda > 0`.
+
+Most signal-vs-noise separation happens between λ = 100 and λ = 500.
+Stopping the grid at λ = 50 (or lower) is a common mistake that makes
+nearly every level look “attended”: the penalty isn’t yet strong enough
+to eliminate the noise. Always extend the grid past λ = 200; the package
+default goes to 500.
 
 ## Plot lambda survival
 
