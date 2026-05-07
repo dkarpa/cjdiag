@@ -635,50 +635,6 @@ nmm <- cj_fit(f, data = immig, method = "nmm",
 # 4. Per-respondent attendance - heterogeneity diagnostic.
 mr2 <- cj_fit(f, data = immig, method = "marginal_r2",
               resp_id = "CaseID")
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
 ```
 
 ``` r

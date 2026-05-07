@@ -26,50 +26,6 @@ f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
 ``` r
 
 mr2 <- cj_fit(f, data = immig, method = "marginal_r2", resp_id = "CaseID")
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
-#> Warning in summary.lm(fit): essentially perfect fit: summary may be unreliable
 mr2
 #> Conjoint Marginal R-squared Importance (Jenke et al. 2021) 
 #> ========================================================== 
