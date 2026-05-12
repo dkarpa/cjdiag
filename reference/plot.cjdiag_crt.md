@@ -9,7 +9,7 @@ Plot CRT/HierNet Results
 plot(
   x,
   type = "robustness",
-  top_n = NULL,
+  top_n = 25L,
   base_size = NULL,
   colors = NULL,
   palette = NULL,
@@ -34,7 +34,8 @@ plot(
 
 - top_n:
 
-  Number of levels to display (default 25; NULL = all).
+  Number of levels to display. Default `25` for `"robustness"`, `"mda"`,
+  and `"survival"`. Pass `NULL` to show every level (no cap).
 
 - base_size:
 

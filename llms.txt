@@ -171,6 +171,36 @@ plot(nmm, type = "cumulative", top_n = 20)
 
 ![](reference/figures/README-nmm-1.png)
 
+### CRT Lambda-Survival
+
+The CRT survival statistic — the largest L1 penalty $`\lambda`$ at which
+a level’s coefficient is still nonzero — gives a one-number attendance
+ranking. Below, fit to HH15 with a $`\lambda`$ grid up to 1000.
+
+``` r
+
+crt <- cj_fit(
+  Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+    CountryofOrigin + Job + JobExperience + JobPlans +
+    ReasonforApplication + PriorEntry,
+  data = immig,
+  method = "crt",
+  lambda_grid = c(seq(25, 250, 25), seq(300, 500, 50), seq(600, 1000, 100))
+)
+
+plot(crt, type = "survival", top_n = 15)
+```
+
+![cjdiag survival (coefficient path, top 15
+levels)](reference/figures/README-hh15_crt_survival.png)
+
+cjdiag survival (coefficient path, top 15 levels)
+
+![HH15 — CRT survival ranking (cjdiag, λ grid up to
+1000)](reference/figures/README-hh15_crt_survival_rank.png)
+
+HH15 — CRT survival ranking (cjdiag, λ grid up to 1000)
+
 ## Methods
 
 All methods are accessed through a single function:
@@ -245,13 +275,13 @@ citation("cjdiag")
 ```
 
 ``` R
-To cite package 'cjdiag' in publications use:
+Um Paket 'cjdiag' in Publikationen zu zitieren, nutzen Sie bitte:
 
   Karpa D (2026). _cjdiag: Diagnostic Tools for Conjoint Survey
   Experiments_. R package version 0.2.1,
   <https://github.com/dkarpa/cjdiag>.
 
-A BibTeX entry for LaTeX users is
+Ein BibTeX-Eintrag für LaTeX-Benutzer ist
 
   @Manual{,
     title = {cjdiag: Diagnostic Tools for Conjoint Survey Experiments},
