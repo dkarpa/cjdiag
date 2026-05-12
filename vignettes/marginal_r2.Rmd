@@ -1,0 +1,68 @@
+---
+title: "Marginal R-squared: Which attributes did each respondent actually use?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Marginal R-squared: Which attributes did each respondent actually use?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9.6,
+  fig.height = 5.4,
+  dpi = 300,
+  out.width = "100%"
+)
+```
+
+## When to use
+
+Use `method = "marginal_r2"` (Jenke, Bansak, Hainmueller and Hangartner
+2021) when you care about *individual-level* heterogeneity in attribute
+attendance --- which respondents used which attributes. The other
+methods aggregate across respondents; this one does not.
+
+For each respondent, the method regresses their choices on each
+attribute *alone* and reports the R². A respondent with R² near zero
+for an attribute likely ignored it entirely.
+
+```{r setup}
+library(cjdiag)
+data(immig)
+
+f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+  CountryofOrigin + Job + JobExperience + JobPlans +
+  ReasonforApplication + PriorEntry
+```
+
+## Fit
+
+```{r mr2-fit}
+mr2 <- cj_fit(f, data = immig, method = "marginal_r2", resp_id = "CaseID")
+mr2
+```
+
+The print output gives the mean / median R² per attribute and the
+share of respondents with R² = 0 (the per-attribute non-attendance
+rate).
+
+## Per-respondent matrix
+
+The full per-respondent × per-attribute R² matrix is on the fit object:
+
+```{r mr2-matrix}
+str(mr2$individual_r2)
+```
+
+You can summarise this however you like --- e.g. count the number of
+attributes each respondent used (R² above some threshold) to study
+heterogeneity in attendance breadth.
+
+## Related
+
+- [CRT / HierNet](crt.html) for an aggregate, regularization-based
+  attendance test.
+- [Random Forest](forest.html) for population-level importance.

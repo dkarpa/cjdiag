@@ -1,0 +1,71 @@
+---
+title: "Nested Marginal Means: In what order do levels settle choices?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Nested Marginal Means: In what order do levels settle choices?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9.6,
+  fig.height = 5.4,
+  dpi = 300,
+  out.width = "100%"
+)
+```
+
+## When to use
+
+Use `method = "nmm"` (Dill, Howlett & Mueller-Crepon 2024) when you
+care about the *order* in which attribute levels settle choices, not
+just their static importance. NMM is the closest match to elimination-
+by-aspects (Tversky 1972) at the level of attribute levels.
+
+The procedure works sequentially:
+
+1. Identify the level whose marginal mean deviates most from 50/50 ---
+   the most *decisive* level.
+2. Remove choice tasks where that level cannot discriminate (because
+   both profiles share it).
+3. Repeat on the reduced sample.
+
+The cumulative plot shows how quickly the top levels account for the
+total decisiveness.
+
+```{r setup}
+library(cjdiag)
+data(immig)
+
+f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+  CountryofOrigin + Job + JobExperience + JobPlans +
+  ReasonforApplication + PriorEntry
+```
+
+## Fit
+
+```{r nmm-fit}
+nmm <- cj_fit(f, data = immig, method = "nmm",
+              resp_id = "CaseID", n_boot = 0)
+nmm
+```
+
+## Plot the cumulative explanation curve
+
+```{r nmm-plot, fig.height = 7.2}
+plot(nmm, top_n = 20)
+```
+
+A steep early curve = a strong decision-order hierarchy: a few
+top-ranked levels settle most of the choices. A flat curve = compensatory
+processing, where many levels each contribute a little.
+
+## Related
+
+- [Decision Tree](tree.html) for an alternative hierarchical
+  representation that uses CART splits instead of marginal means.
+- [Random Forest](forest.html) for static level importance without an
+  ordering assumption.

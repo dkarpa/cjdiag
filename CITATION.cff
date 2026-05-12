@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "cjdiag: Diagnostic Tools for Conjoint Survey Experiments"
+version: 0.2.1
+date-released: "2026-05-06"
+authors:
+  - family-names: "Karpa"
+    given-names: "David"
+    orcid: "https://orcid.org/0000-0002-4327-4269"
+license: MIT
+repository-code: "https://github.com/dkarpa/cjdiag"
+url: "https://dkarpa.github.io/cjdiag/"
+keywords:
+  - conjoint analysis
+  - survey experiments
+  - political science
+  - attribute non-attendance
+  - decision diagnostics
+  - R

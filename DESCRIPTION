@@ -1,0 +1,55 @@
+Package: cjdiag
+Title: Diagnostic Tools for Conjoint Survey Experiments
+Version: 0.2.1
+Authors@R:
+    person("David", "Karpa", , "davidfkarpa@gmail.com", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0002-4327-4269"))
+Description: Tools for attribute-level importance and attendance in conjoint
+    survey experiments — which attribute levels drive choices, how they rank,
+    and which ones respondents ignore. Provides five methods via a unified
+    interface: random forests (Breiman (2001) <doi:10.1023/A:1010933404324>)
+    to identify which attribute levels matter most, 'CART' decision trees to
+    reveal how respondents structure their decisions hierarchically,
+    penalized regression via 'hierNet' to separate genuine drivers from
+    noise (Bien and Tibshirani (2014) <doi:10.1214/14-AOAS757>), nested
+    marginal means to uncover the order in which attribute levels settle
+    choices (Dill, Howlett and Mueller-Crepon (2024) <doi:10.1017/pan.2024.12>),
+    and per-respondent marginal R-squared to detect which attributes each
+    respondent actually used (Jenke, Bansak, Hainmueller and Hangartner
+    (2021) <doi:10.1017/pan.2020.11>). Supports level-specific and
+    attribute-level resolution with publication-ready 'ggplot2' visualizations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: en-US
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    stats,
+    utils,
+    rlang,
+    cli,
+    dplyr,
+    tidyr,
+    tibble,
+    ggplot2,
+    randomForest,
+    rpart
+Suggests:
+    testthat (>= 3.0.0),
+    rpart.plot,
+    hierNet,
+    haven,
+    cjoint,
+    ggtext,
+    generics,
+    vctrs,
+    broom,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Depends:
+    R (>= 3.5)
+LazyData: true
+URL: https://dkarpa.github.io/cjdiag/, https://github.com/dkarpa/cjdiag
+BugReports: https://github.com/dkarpa/cjdiag/issues

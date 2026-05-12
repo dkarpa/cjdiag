@@ -1,0 +1,9 @@
+bibentry(
+  bibtype  = "Manual",
+  title    = "cjdiag: Diagnostic Tools for Conjoint Survey Experiments",
+  author   = person("David", "Karpa", role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-4327-4269")),
+  year     = "2026",
+  note     = paste("R package version", meta$Version),
+  url      = "https://github.com/dkarpa/cjdiag"
+)

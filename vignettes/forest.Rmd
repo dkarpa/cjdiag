@@ -1,0 +1,69 @@
+---
+title: "Random Forest: Which attribute levels matter most?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Random Forest: Which attribute levels matter most?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9.6,
+  fig.height = 5.4,
+  dpi = 300,
+  out.width = "100%"
+)
+```
+
+## When to use
+
+Always fit `method = "forest"` first. It is non-parametric, makes no
+behavioural assumptions, and gives you the importance hierarchy of
+individual attribute *levels*.
+
+```{r setup}
+library(cjdiag)
+data(immig)
+
+f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+  CountryofOrigin + Job + JobExperience + JobPlans +
+  ReasonforApplication + PriorEntry
+```
+
+## Fit
+
+```{r forest-fit}
+rf <- cj_fit(f, data = immig, method = "forest")
+rf
+```
+
+## Interpret the results table
+
+```{r forest-results}
+rf$results
+```
+
+Key columns:
+
+- **mda** --- Mean Decrease in Accuracy. How much the forest's predictive
+  accuracy drops when this level's values are shuffled. Higher = more
+  important. Levels with `mda` near zero are effectively ignored.
+- **root_pct** --- % of trees in the forest where this level is the
+  *first* split. The **gatekeeper signal**.
+- **class_0** / **class_1** --- class-conditional importance. `class_0`
+  large = level mostly drives *rejection* (deal-breaker); `class_1`
+  large = level mostly drives *selection* (attractor).
+
+## Plot
+
+```{r forest-plot, fig.height = 7.2}
+plot(rf, type = "rank", top_n = 20)
+```
+
+## Related
+
+- [Decision Tree](tree.html) for the hierarchical structure of these importances.
+- [Nested Marginal Means](nmm.html) for the decision *order*.

@@ -1,0 +1,65 @@
+url: https://dkarpa.github.io/cjdiag/
+
+template:
+  bootstrap: 5
+
+reference:
+- title: "Package"
+  contents:
+  - cjdiag-package
+
+- title: "Model Fitting"
+  desc: "Main entry point for fitting conjoint diagnostic models"
+  contents:
+  - cj_fit
+
+- title: "Results Extraction"
+  desc: "Extract and format model results"
+  contents:
+  - importance
+  - starts_with("tidy")
+  - starts_with("glance")
+
+- title: "Plotting"
+  desc: "Visualize model results"
+  contents:
+  - starts_with("plot.")
+  - theme_cjdiag
+  - cjdiag_palette
+
+- title: "Global Options"
+  desc: "Set package-wide defaults for plots and output"
+  contents:
+  - set_cjdiag_theme
+  - set_cjdiag_labels
+  - get_cjdiag_options
+
+- title: "Utilities"
+  desc: "Helper functions"
+  contents:
+  - augment_profile_order
+  - reexports
+
+- title: "Data"
+  desc: "Bundled datasets"
+  contents:
+  - immig
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+
+articles:
+- title: "Getting Started"
+  contents:
+  - cjdiag
+
+- title: "Methods"
+  desc: "Task-oriented walkthroughs, one per method"
+  contents:
+  - forest
+  - tree
+  - nmm
+  - marginal_r2
+  - crt

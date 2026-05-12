@@ -1,0 +1,33 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+src/*.o
+src/*.so
+src/*.dll
+inst/doc
+/doc/
+/Meta/
+/docs/
+/pkgdown/favicon/
+Rplots.pdf
+vignettes/*.html
+/winbuilder/
+
+# Internal / non-public
+/dev/
+/private/
+/secrets/
+*.env
+.env
+*.log
+*.bak
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

@@ -1,0 +1,61 @@
+---
+title: "Decision Tree: How do respondents structure their decisions?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Decision Tree: How do respondents structure their decisions?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9.6,
+  fig.height = 5.4,
+  dpi = 300,
+  out.width = "100%"
+)
+```
+
+## When to use
+
+Use `method = "tree"` when you suspect respondents apply a hierarchical
+elimination rule --- a lexicographic *gatekeeper* attribute they check
+first, then a smaller cue conditional on it. The root split identifies
+the gatekeeper. The tree uses only a subset of available levels,
+consistent with respondents processing a few key cues rather than all
+information at once.
+
+```{r setup}
+library(cjdiag)
+data(immig)
+
+f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+  CountryofOrigin + Job + JobExperience + JobPlans +
+  ReasonforApplication + PriorEntry
+```
+
+## Fit
+
+```{r tree-fit}
+tr <- cj_fit(f, data = immig, method = "tree")
+tr
+```
+
+## Plot
+
+```{r tree-plot}
+plot(tr)
+```
+
+Splits are labelled `Attribute: level` (e.g. `JobPlans: no plans to
+look for work`) so the diagnostic is readable without per-dataset
+customisation.
+
+## Related
+
+- [Random Forest](forest.html) gives the population-level importance
+  hierarchy that the tree's splits draw from.
+- [Nested Marginal Means](nmm.html) for an alternative
+  sequential-elimination view that does not require fitting a tree.

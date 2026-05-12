@@ -1,0 +1,83 @@
+---
+title: "CRT / HierNet: Which levels survive a strict signal-vs-noise test?"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CRT / HierNet: Which levels survive a strict signal-vs-noise test?}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 9.6,
+  fig.height = 5.4,
+  dpi = 300,
+  out.width = "100%"
+)
+```
+
+## When to use
+
+Use `method = "crt"` when you want a hard *attendance test*: which
+attribute levels keep a non-zero coefficient under increasing L1
+penalty? Levels that vanish quickly under penalization are noise or
+redundant; levels that survive the heaviest penalties genuinely drive
+choices.
+
+CRT requires the [hierNet](https://cran.r-project.org/package=hierNet)
+package. It is the most computationally expensive method in cjdiag.
+
+```{r setup}
+library(cjdiag)
+data(immig)
+
+f <- Chosen_Immigrant ~ Gender + Education + LanguageSkills +
+  CountryofOrigin + Job + JobExperience + JobPlans +
+  ReasonforApplication + PriorEntry
+```
+
+## Fit
+
+```{r crt-fit, eval = requireNamespace("hierNet", quietly = TRUE)}
+crt <- cj_fit(f, data = immig, method = "crt",
+              lambda_grid = c(5, 10, 20, 50, 100, 150, 200, 300, 500),
+              n_folds = 3, n_perm = 5)
+crt
+```
+
+`max_lambda` is the largest λ at which the level still has a non-zero
+coefficient. `attended` is a boolean derived from `max_lambda > 0`.
+
+Most signal-vs-noise separation happens between λ = 100 and λ = 500.
+Stopping the grid at λ = 50 (or lower) is a common mistake that
+makes nearly every level look "attended": the penalty isn't yet
+strong enough to eliminate the noise. Always extend the grid past
+λ = 200; the package default goes to 500.
+
+## Plot lambda survival
+
+Two complementary views of the survival statistic.
+
+`type = "survival"` shows each level's coefficient path across the
+lambda grid, so you can see at what penalty a level drops out.
+
+```{r crt-survival, eval = requireNamespace("hierNet", quietly = TRUE), fig.height = 7.2}
+plot(crt, type = "survival")
+```
+
+`type = "rank"` collapses each path to its `max_lambda` and plots the
+levels in descending order — a one-number attendance ranking in the
+same connected-dot style as `plot(forest, type = "rank")`.
+
+```{r crt-rank, eval = requireNamespace("hierNet", quietly = TRUE), fig.height = 5.4}
+plot(crt, type = "rank")
+```
+
+## Related
+
+- [Marginal R-squared](marginal_r2.html) for a per-respondent
+  attendance signal.
+- [Random Forest](forest.html) for a non-parametric importance ranking
+  (no penalization).
