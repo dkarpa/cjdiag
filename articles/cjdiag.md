@@ -292,7 +292,7 @@ Pass any `rpart.plot` argument through `...` to override defaults
 
 ``` r
 
-plot(crt_obj, type = c("robustness", "survival", "mda", "cv"),
+plot(crt_obj, type = c("robustness", "survival", "rank", "mda", "cv"),
      top_n = NULL, ...)
 ```
 
@@ -300,6 +300,10 @@ plot(crt_obj, type = c("robustness", "survival", "mda", "cv"),
   (the largest λ where the level survives).
 - `type = "survival"` — λ-survival curve: which levels keep a non-zero
   coefficient as λ rises.
+- `type = "rank"` — connected-dot plot of `max_lambda` per level,
+  ordered from most to least attended. Same aesthetic as
+  `plot(forest, type = "rank")` but the y-axis is the survival statistic
+  instead of MDA.
 - `type = "mda"` — permutation importance from the CRT fit.
 - `type = "cv"` — cross-validated accuracy across the lambda grid.
 

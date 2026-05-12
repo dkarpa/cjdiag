@@ -501,7 +501,7 @@ through <code>...</code> to override defaults (<code>type = 4</code>,
 <h3 id="plot-cjdiag_crt">6.3 <code>plot.cjdiag_crt()</code><a class="anchor" aria-label="anchor" href="#plot-cjdiag_crt"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt_obj</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"robustness"</span>, <span class="st">"survival"</span>, <span class="st">"mda"</span>, <span class="st">"cv"</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt_obj</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"robustness"</span>, <span class="st">"survival"</span>, <span class="st">"rank"</span>, <span class="st">"mda"</span>, <span class="st">"cv"</span><span class="op">)</span>,</span>
 <span>     top_n <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>
@@ -511,6 +511,11 @@ survives).</li>
 <li>
 <code>type = "survival"</code> — λ-survival curve: which levels keep
 a non-zero coefficient as λ rises.</li>
+<li>
+<code>type = "rank"</code> — connected-dot plot of
+<code>max_lambda</code> per level, ordered from most to least attended.
+Same aesthetic as <code>plot(forest, type = "rank")</code> but the
+y-axis is the survival statistic instead of MDA.</li>
 <li>
 <code>type = "mda"</code> — permutation importance from the CRT
 fit.</li>

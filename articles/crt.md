@@ -68,12 +68,28 @@ default goes to 500.
 
 ## Plot lambda survival
 
+Two complementary views of the survival statistic.
+
+`type = "survival"` shows each level’s coefficient path across the
+lambda grid, so you can see at what penalty a level drops out.
+
 ``` r
 
 plot(crt, type = "survival")
 ```
 
-![](crt_files/figure-html/crt-plot-1.png)
+![](crt_files/figure-html/crt-survival-1.png)
+
+`type = "rank"` collapses each path to its `max_lambda` and plots the
+levels in descending order — a one-number attendance ranking in the same
+connected-dot style as `plot(forest, type = "rank")`.
+
+``` r
+
+plot(crt, type = "rank")
+```
+
+![](crt_files/figure-html/crt-rank-1.png)
 
 ## Related
 

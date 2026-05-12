@@ -124,9 +124,20 @@ default goes to 500.</p>
 <div class="section level2">
 <h2 id="plot-lambda-survival">Plot lambda survival<a class="anchor" aria-label="anchor" href="#plot-lambda-survival"></a>
 </h2>
+<p>Two complementary views of the survival statistic.</p>
+<p><code>type = "survival"</code> shows each level’s coefficient path
+across the lambda grid, so you can see at what penalty a level drops
+out.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt</span>, type <span class="op">=</span> <span class="st">"survival"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="crt_files/figure-html/crt-plot-1.png" class="r-plt" alt="" width="100%"></p>
+<p><img src="crt_files/figure-html/crt-survival-1.png" class="r-plt" alt="" width="100%"></p>
+<p><code>type = "rank"</code> collapses each path to its
+<code>max_lambda</code> and plots the levels in descending order — a
+one-number attendance ranking in the same connected-dot style as
+<code>plot(forest, type = "rank")</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt</span>, type <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="crt_files/figure-html/crt-rank-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="related">Related<a class="anchor" aria-label="anchor" href="#related"></a>
