@@ -30,12 +30,15 @@ plot(
 
 - type:
 
-  Plot type: `"robustness"` (default), `"survival"`, `"mda"`, or `"cv"`
+  Plot type: `"robustness"` (default), `"survival"`, `"rank"`, `"mda"`,
+  or `"cv"`. `"rank"` is a connected-dot plot of each level's survival
+  statistic (max \\\lambda\\ at which the coefficient is nonzero),
+  ordered from most to least attended.
 
 - top_n:
 
   Number of levels to display. Default `25` for `"robustness"`, `"mda"`,
-  and `"survival"`. Pass `NULL` to show every level (no cap).
+  `"rank"`, and `"survival"`. Pass `NULL` to show every level.
 
 - base_size:
 

@@ -65,12 +65,15 @@
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Plot type: <code>"robustness"</code> (default), <code>"survival"</code>, <code>"mda"</code>, or <code>"cv"</code></p></dd>
+<dd><p>Plot type: <code>"robustness"</code> (default), <code>"survival"</code>, <code>"rank"</code>,
+<code>"mda"</code>, or <code>"cv"</code>. <code>"rank"</code> is a connected-dot plot of each level's
+survival statistic (max \(\lambda\) at which the coefficient is
+nonzero), ordered from most to least attended.</p></dd>
 
 
 <dt id="arg-top-n">top_n<a class="anchor" aria-label="anchor" href="#arg-top-n"></a></dt>
 <dd><p>Number of levels to display. Default <code>25</code> for <code>"robustness"</code>,
-<code>"mda"</code>, and <code>"survival"</code>. Pass <code>NULL</code> to show every level (no cap).</p></dd>
+<code>"mda"</code>, <code>"rank"</code>, and <code>"survival"</code>. Pass <code>NULL</code> to show every level.</p></dd>
 
 
 <dt id="arg-base-size">base_size<a class="anchor" aria-label="anchor" href="#arg-base-size"></a></dt>

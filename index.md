@@ -11,7 +11,8 @@ Standard conjoint analysis tools
 [cregg](https://github.com/leeper/cregg)) estimate *what* respondents
 prefer — Average Marginal Component Effects (AMCEs) and marginal means.
 But they cannot tell you *how* respondents decide: which attributes they
-actually attend to or which attribute levels they ignore entirely.
+actually attend to, whether they process information hierarchically, or
+which attribute levels they ignore entirely.
 
 **cjdiag** fills this gap with five diagnostic methods that reveal the
 decision process behind conjoint choices.
@@ -188,7 +189,8 @@ crt <- cj_fit(
   lambda_grid = c(seq(25, 250, 25), seq(300, 500, 50), seq(600, 1000, 100))
 )
 
-plot(crt, type = "survival", top_n = 15)
+plot(crt, type = "survival", top_n = 15)   # coefficient path
+plot(crt, type = "rank")                    # connected-dot survival ranking
 ```
 
 ![cjdiag survival (coefficient path, top 15

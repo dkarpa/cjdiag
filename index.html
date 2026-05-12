@@ -60,7 +60,7 @@
 <div class="section level2">
 <h2 id="why-cjdiag">Why cjdiag?<a class="anchor" aria-label="anchor" href="#why-cjdiag"></a>
 </h2>
-<p>Standard conjoint analysis tools (<a href="https://cran.r-project.org/package=cjoint" class="external-link">cjoint</a>, <a href="https://github.com/leeper/cregg" class="external-link">cregg</a>) estimate <em>what</em> respondents prefer — Average Marginal Component Effects (AMCEs) and marginal means. But they cannot tell you <em>how</em> respondents decide: which attributes they actually attend to or which attribute levels they ignore entirely.</p>
+<p>Standard conjoint analysis tools (<a href="https://cran.r-project.org/package=cjoint" class="external-link">cjoint</a>, <a href="https://github.com/leeper/cregg" class="external-link">cregg</a>) estimate <em>what</em> respondents prefer — Average Marginal Component Effects (AMCEs) and marginal means. But they cannot tell you <em>how</em> respondents decide: which attributes they actually attend to, whether they process information hierarchically, or which attribute levels they ignore entirely.</p>
 <p><strong>cjdiag</strong> fills this gap with five diagnostic methods that reveal the decision process behind conjoint choices.</p>
 </div>
 <div class="section level2">
@@ -391,7 +391,8 @@
 <span>  lambda_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">250</span>, <span class="fl">25</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">500</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">600</span>, <span class="fl">1000</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt</span>, type <span class="op">=</span> <span class="st">"survival"</span>, top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt</span>, type <span class="op">=</span> <span class="st">"survival"</span>, top_n <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>   <span class="co"># coefficient path</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">crt</span>, type <span class="op">=</span> <span class="st">"rank"</span><span class="op">)</span>                    <span class="co"># connected-dot survival ranking</span></span></code></pre></div>
 <figure><img src="reference/figures/README-hh15_crt_survival.png" alt="cjdiag survival (coefficient path, top 15 levels)"><figcaption aria-hidden="true">
 cjdiag survival (coefficient path, top 15 levels)
 </figcaption></figure><figure><img src="reference/figures/README-hh15_crt_survival_rank.png" alt="HH15 — CRT survival ranking (cjdiag, λ grid up to 1000)"><figcaption aria-hidden="true">
