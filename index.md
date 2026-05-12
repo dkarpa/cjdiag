@@ -11,8 +11,7 @@ Standard conjoint analysis tools
 [cregg](https://github.com/leeper/cregg)) estimate *what* respondents
 prefer — Average Marginal Component Effects (AMCEs) and marginal means.
 But they cannot tell you *how* respondents decide: which attributes they
-actually attend to, whether they process information hierarchically, or
-which attribute levels they ignore entirely.
+actually attend to or which attribute levels they ignore entirely.
 
 **cjdiag** fills this gap with five diagnostic methods that reveal the
 decision process behind conjoint choices.
